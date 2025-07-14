@@ -1,8 +1,3 @@
-interface LetterState {
-  letter: string;
-  state: "empty" | "filled" | "correct" | "present" | "absent";
-}
-
 interface RowProps {
   letters: string[];
   states?: ("empty" | "filled" | "correct" | "present" | "absent")[];
@@ -23,11 +18,11 @@ export function Row({ letters, states }: RowProps) {
 
     switch (state) {
       case "correct":
-        return `${baseClasses} bg-green-500 text-white border-green-500`;
+        return `${baseClasses} bg-keyBoardCorrect text-white border-keyBoardCorrect`;
       case "present":
-        return `${baseClasses} bg-yellow-500 text-white border-yellow-500`;
+        return `${baseClasses} bg-keyBoardPresent text-white border-keyBoardPresent`;
       case "absent":
-        return `${baseClasses} bg-gray-600 text-white border-gray-600`;
+        return `${baseClasses} bg-keyBoardAbsent text-white border-keyBoardAbsent`;
       case "filled":
         return `${baseClasses} bg-background text-foreground border-gray-400 scale-105`;
       default: // empty

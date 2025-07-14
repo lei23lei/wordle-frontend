@@ -53,9 +53,15 @@
     --chart-5: 27 87% 67%;
 
     --radius: 0.5rem;
+
+    --key-board-background: 225 31% 90%;
+    --key-board-absent: 225 20% 70%;
+    --key-board-text: 221 30% 36%;
+    --key-board-present: 45 85% 59%;
+    --key-board-correct: 96 43% 52%;
   }
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 0 0% 10%;
 
     --foreground: 0 0% 98%;
 
@@ -87,7 +93,7 @@
 
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%;
+    --border: 0 0% 24.9%;
 
     --input: 0 0% 14.9%;
 
@@ -102,6 +108,13 @@
     --chart-4: 280 65% 60%;
 
     --chart-5: 340 75% 55%;
+
+    --key-board-background: 180 1% 51%;
+
+    --key-board-text: 0 0% 98%;
+    --key-board-absent: 240 2% 23%;
+    --key-board-present: 45 85% 59%;
+    --key-board-correct: 96 43% 52%;
   }
 }
 

@@ -20,18 +20,18 @@ export default function Keyboard({
       "min-w-[32px] sm:min-w-[40px] h-10 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs sm:text-sm uppercase transition-colors cursor-pointer select-none flex items-center justify-center touch-manipulation";
 
     if (correctKeys.includes(key)) {
-      return `${baseClasses} bg-green-500 text-white`;
+      return `${baseClasses} bg-keyBoardCorrect text-white`;
     }
 
     if (presentKeys.includes(key)) {
-      return `${baseClasses} bg-yellow-500 text-white`;
+      return `${baseClasses} bg-keyBoardPresent text-white`;
     }
 
     if (absentKeys.includes(key)) {
-      return `${baseClasses} bg-gray-600 text-white`;
+      return `${baseClasses} bg-keyBoardAbsent text-white`;
     }
 
-    return `${baseClasses} bg-gray-300 text-black hover:bg-gray-400 active:bg-gray-500`;
+    return `${baseClasses} bg-keyBoardBackground text-keyBoardText hover:bg-gray-100 dark:hover:bg-gray-600 active:bg-gray-500`;
   };
 
   const getSpecialKeyClassName = () => {
@@ -69,7 +69,10 @@ export default function Keyboard({
       {/* Bottom Row with Enter and Backspace */}
       <div className="flex justify-center">
         <button
-          className={getSpecialKeyClassName()}
+          className={
+            getSpecialKeyClassName() +
+            " bg-keyBoardBackground hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-white text-gray-800 "
+          }
           onClick={() => onKeyPress("ENTER")}
         >
           <span className="hidden sm:inline">Enter</span>
@@ -85,7 +88,10 @@ export default function Keyboard({
           </button>
         ))}
         <button
-          className={getSpecialKeyClassName()}
+          className={
+            getSpecialKeyClassName() +
+            " bg-keyBoardBackground hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-white text-gray-800 "
+          }
           onClick={() => onKeyPress("BACKSPACE")}
         >
           ⌫
