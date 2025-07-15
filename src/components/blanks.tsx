@@ -1,9 +1,10 @@
 interface RowProps {
   letters: string[];
   states?: ("empty" | "filled" | "correct" | "present" | "absent")[];
+  shake?: boolean;
 }
 
-export function Row({ letters, states }: RowProps) {
+export function Row({ letters, states, shake }: RowProps) {
   // Ensure we always have 5 slots
   const cells = Array(5)
     .fill(null)
@@ -31,7 +32,9 @@ export function Row({ letters, states }: RowProps) {
   };
 
   return (
-    <div className="flex flex-row gap-1 sm:gap-2">
+    <div
+      className={`flex flex-row gap-1 sm:gap-2 ${shake ? "animate-shake" : ""}`}
+    >
       {cells.map((cell, index) => (
         <div key={index} className={getLetterClassName(cell.state)}>
           {cell.letter}
@@ -45,12 +48,14 @@ interface BlanksProps {
   guesses: string[][];
   currentGuess: string[];
   guessStates?: ("empty" | "filled" | "correct" | "present" | "absent")[][];
+  hasNotification?: boolean;
 }
 
 export default function Blanks({
   guesses,
   currentGuess,
   guessStates,
+  hasNotification,
 }: BlanksProps) {
   const maxGuesses = 6;
 
@@ -70,7 +75,9 @@ export default function Blanks({
             );
           } else if (index === guesses.length) {
             // Current guess being typed
-            return <Row key={index} letters={currentGuess} />;
+            return (
+              <Row key={index} letters={currentGuess} shake={hasNotification} />
+            );
           } else {
             // Empty row
             return <Row key={index} letters={[]} />;

@@ -54,7 +54,7 @@
 
     --radius: 0.5rem;
 
-    --key-board-background: 225 31% 90%;
+    --key-board-background: 0 0% 100%;
     --key-board-absent: 225 20% 70%;
     --key-board-text: 221 30% 36%;
     --key-board-present: 45 85% 59%;
@@ -170,4 +170,28 @@
 
 .animate-cloud {
   animation: cloud-move 12s infinite ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.6s ease-in-out;
 }

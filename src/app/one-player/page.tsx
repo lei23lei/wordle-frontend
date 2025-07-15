@@ -26,6 +26,7 @@ export default function OnePlayer() {
   const [isValidating, setIsValidating] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogType, setDialogType] = useState<DialogType>(null);
+  const [notificationMessage, setNotificationMessage] = useState<string>("");
 
   // Keyboard state tracking
   const [correctKeys, setCorrectKeys] = useState<string[]>([]);
@@ -51,6 +52,7 @@ export default function OnePlayer() {
     setIsValidating(false);
     setDialogOpen(false);
     setDialogType(null);
+    setNotificationMessage("");
   };
 
   const showDialog = (type: DialogType) => {
@@ -63,6 +65,14 @@ export default function OnePlayer() {
         setDialogOpen(false);
       }, 1000);
     }
+  };
+
+  const showNotification = (message: string) => {
+    setNotificationMessage(message);
+    // Auto-clear notification after 2 seconds
+    setTimeout(() => {
+      setNotificationMessage("");
+    }, 2000);
   };
 
   // Word validation using Free Dictionary API with local fallback
@@ -158,7 +168,7 @@ export default function OnePlayer() {
 
   const submitGuess = async () => {
     if (currentGuess.length !== 5) {
-      showDialog("short");
+      showNotification("Too Short");
       return;
     }
 
@@ -169,7 +179,7 @@ export default function OnePlayer() {
 
     if (!isValid) {
       setIsValidating(false);
-      showDialog("invalid");
+      showNotification("Not in Dictionary");
       return;
     }
 
@@ -248,16 +258,6 @@ export default function OnePlayer() {
           description: `You lost! The word was ${targetWord}`,
           className: "",
         };
-      case "invalid":
-        return {
-          title: "Not in Dictionary",
-          className: "",
-        };
-      case "short":
-        return {
-          title: "Too Short",
-          className: "",
-        };
       default:
         return {
           title: "",
@@ -272,18 +272,24 @@ export default function OnePlayer() {
   return (
     <div className="container mx-auto">
       {/* <div>{targetWord}</div> */}
-      <div className="flex flex-col items-center justify-start min-h-screen gap-6 py-4">
+      <div className="flex relative flex-col items-center justify-start min-h-screen gap-6 py-8">
         <Blanks
           guesses={guesses}
           currentGuess={currentGuess}
           guessStates={guessStates}
+          hasNotification={!!notificationMessage}
         />
         {gameState !== "playing" && (
-          <CustomizedButton onClick={startNewGame} className="mt-1">
+          <CustomizedButton onClick={startNewGame} className="-my-4">
             Play Again
           </CustomizedButton>
         )}
-
+        {/* notification */}
+        {notificationMessage && (
+          <div className="absolute -top-4 h-10 w-40 flex items-center border border-gray-300 justify-center font-bold bg-gray-50 rounded-sm shadow-md text-black">
+            {notificationMessage}
+          </div>
+        )}
         <Keyboard
           onKeyPress={handleKeyPress}
           correctKeys={correctKeys}
