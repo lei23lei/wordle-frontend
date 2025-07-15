@@ -1,5 +1,6 @@
 "use client";
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
@@ -14,6 +15,14 @@ export default function CustomizedButton({
   type = "button",
 }: ButtonProps) {
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null; // Don't render until theme is resolved
+
   const isDark = resolvedTheme === "dark";
 
   // Light and dark wood styles
