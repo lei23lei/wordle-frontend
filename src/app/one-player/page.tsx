@@ -271,14 +271,15 @@ export default function OnePlayer() {
 
   return (
     <div className="container mx-auto">
-      <div className="flex flex-col items-center justify-start min-h-screen gap-6 py-8">
+      {/* <div>{targetWord}</div> */}
+      <div className="flex flex-col items-center justify-start min-h-screen gap-6 py-4">
         <Blanks
           guesses={guesses}
           currentGuess={currentGuess}
           guessStates={guessStates}
         />
         {gameState !== "playing" && (
-          <CustomizedButton onClick={startNewGame} className="mt-4">
+          <CustomizedButton onClick={startNewGame} className="mt-1">
             Play Again
           </CustomizedButton>
         )}
