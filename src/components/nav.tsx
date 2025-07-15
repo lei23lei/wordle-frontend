@@ -41,7 +41,12 @@ export default function Nav() {
   return (
     <div className="container mx-auto">
       <div className="w-full  h-16 flex items-center justify-between px-6">
-        <SmallLogo />
+        <Link
+          href="/"
+          className="hover:scale-105 transition-all duration-200 cursor-pointer"
+        >
+          <SmallLogo />
+        </Link>
         <div className="flex flex-row gap-4 items-center">
           <Button
             variant="ghost"
