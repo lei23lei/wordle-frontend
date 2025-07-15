@@ -3,6 +3,7 @@ import "./globals.css";
 import { StoreProvider } from "@/providers/store-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Nav from "@/components/nav";
+import Background from "@/components/background";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,13 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="">
-      <body className="bg-background">
+      <body className="bg-background h-screen overflow-hidden">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <Background />
           <StoreProvider>
             <Nav />
             {children}
