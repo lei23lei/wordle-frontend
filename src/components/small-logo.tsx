@@ -1,5 +1,4 @@
-export default function Logo() {
-  // "WORDLE" with colored squares for the first 5 letters
+export default function SmallLogo() {
   const letters = [
     { char: "W", color: "bg-green-600 text-white" },
     { char: "O", color: "bg-yellow-400 text-black" },
@@ -15,22 +14,17 @@ export default function Logo() {
     },
   ];
 
-  // Animation delays for wave effect (not used now, but kept for possible future use)
-  // const delays = [0, 0.1, 0.2, 0.3, 0.4, 0.5];
-
   return (
-    <div className="flex items-end gap-1 select-none">
+    <div className="flex items-end gap-0.5 select-none">
       {letters.map((l, i) => (
         <span
           key={i}
           className={`
-            w-14 h-14 text-3xl
-            md:w-20 md:h-20 md:text-5xl
-            lg:w-28 lg:h-28 lg:text-7xl
+            w-6 h-6 text-base
+            md:w-8 md:h-8 md:text-lg
             rounded-md font-bold flex items-center justify-center shadow-sm
             ${l.color}
             transition-all
-            animate-float
           `}
           style={{
             letterSpacing: "0.05em",

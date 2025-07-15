@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { Sun, MoonStar } from "lucide-react";
 import { useEffect, useState } from "react";
+import SmallLogo from "./small-logo";
 
 export default function Nav() {
   const { theme, setTheme, systemTheme } = useTheme();
@@ -40,7 +41,7 @@ export default function Nav() {
   return (
     <div className="container mx-auto">
       <div className="w-full  h-16 flex items-center justify-between px-6">
-        <div className="">Wordle</div>
+        <SmallLogo />
         <div className="flex flex-row gap-4 items-center">
           <Button
             variant="ghost"

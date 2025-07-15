@@ -34,10 +34,6 @@ export default function Keyboard({
     return `${baseClasses} bg-keyBoardBackground text-keyBoardText hover:bg-gray-100 dark:hover:bg-gray-600 active:bg-gray-500`;
   };
 
-  const getSpecialKeyClassName = () => {
-    return "px-2 sm:px-4 h-10 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs uppercase transition-colors cursor-pointer select-none bg-gray-400 text-white hover:bg-gray-500 active:bg-gray-600 flex items-center justify-center touch-manipulation";
-  };
-
   return (
     <div className="w-full max-w-lg mx-auto px-2">
       {/* Top Row */}
@@ -70,8 +66,8 @@ export default function Keyboard({
       <div className="flex justify-center">
         <button
           className={
-            getSpecialKeyClassName() +
-            " bg-keyBoardBackground hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-white text-gray-800 "
+            getKeyClassName("ENTER") +
+            " min-w-[46px] sm:min-w-[56px] px-2 sm:px-4"
           }
           onClick={() => onKeyPress("ENTER")}
         >
@@ -89,8 +85,8 @@ export default function Keyboard({
         ))}
         <button
           className={
-            getSpecialKeyClassName() +
-            " bg-keyBoardBackground hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-white text-gray-800 "
+            getKeyClassName("BACKSPACE") +
+            " min-w-[48px] sm:min-w-[44px] px-2 sm:px-4"
           }
           onClick={() => onKeyPress("BACKSPACE")}
         >
