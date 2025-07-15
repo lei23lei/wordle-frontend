@@ -17,7 +17,7 @@ export default function Keyboard({
 
   const getKeyClassName = (key: string) => {
     const baseClasses =
-      "min-w-[32px] sm:min-w-[40px] h-10 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs sm:text-sm uppercase transition-colors cursor-pointer select-none flex items-center justify-center touch-manipulation";
+      "min-w-[32px] sm:min-w-[40px] h-14 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs sm:text-sm uppercase transition-colors cursor-pointer select-none flex items-center justify-center touch-manipulation";
 
     if (correctKeys.includes(key)) {
       return `${baseClasses} bg-keyBoardCorrect text-white`;
@@ -35,7 +35,7 @@ export default function Keyboard({
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto px-2">
+    <div className="w-full max-w-lg mx-auto px-2 pb-6 sm:pb-0">
       {/* Top Row */}
       <div className="flex justify-center mb-1 sm:mb-2">
         {topRow.map((key) => (

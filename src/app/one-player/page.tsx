@@ -277,6 +277,11 @@ export default function OnePlayer() {
           currentGuess={currentGuess}
           guessStates={guessStates}
         />
+        {gameState !== "playing" && (
+          <CustomizedButton onClick={startNewGame} className="mt-4">
+            Play Again
+          </CustomizedButton>
+        )}
 
         <Keyboard
           onKeyPress={handleKeyPress}
@@ -284,12 +289,6 @@ export default function OnePlayer() {
           presentKeys={presentKeys}
           absentKeys={absentKeys}
         />
-
-        {gameState !== "playing" && (
-          <CustomizedButton onClick={startNewGame} className="mt-4">
-            Play Again
-          </CustomizedButton>
-        )}
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent
