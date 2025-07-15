@@ -2,17 +2,15 @@
 
 import Blanks from "@/components/blanks";
 import Keyboard from "@/components/keyboard";
-import { Button } from "@/components/ui/button";
+import CustomizedButton from "@/components/customized-button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { VALID_WORDS } from "@/data/words";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type GameState = "playing" | "won" | "lost";
 type DialogType = "won" | "lost" | "invalid" | "short" | null;
@@ -25,7 +23,6 @@ export default function OnePlayer() {
     ("empty" | "filled" | "correct" | "present" | "absent")[][]
   >([]);
   const [gameState, setGameState] = useState<GameState>("playing");
-  const [message, setMessage] = useState<string>("");
   const [isValidating, setIsValidating] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogType, setDialogType] = useState<DialogType>(null);
@@ -48,7 +45,6 @@ export default function OnePlayer() {
     setGuesses([]);
     setGuessStates([]);
     setGameState("playing");
-    setMessage("");
     setCorrectKeys([]);
     setPresentKeys([]);
     setAbsentKeys([]);
@@ -57,9 +53,8 @@ export default function OnePlayer() {
     setDialogType(null);
   };
 
-  const showDialog = (type: DialogType, msg: string) => {
+  const showDialog = (type: DialogType) => {
     setDialogType(type);
-    setMessage(msg);
     setDialogOpen(true);
 
     // Auto-close after 3 seconds for non-game-end dialogs
@@ -85,7 +80,7 @@ export default function OnePlayer() {
         `https://api.dictionaryapi.dev/api/v2/entries/en/${wordStr.toLowerCase()}`
       );
       return response.ok;
-    } catch (error) {
+    } catch {
       // If API fails, fall back to local list only
       console.warn("Dictionary API failed, using local validation only");
       return false;
@@ -103,8 +98,8 @@ export default function OnePlayer() {
     for (let i = 0; i < 5; i++) {
       if (guessArray[i] === targetArray[i]) {
         result[i] = "correct";
-        targetArray[i] = null as any; // Mark as used
-        guessArray[i] = null as any; // Mark as used
+        targetArray[i] = null as unknown as string; // Mark as used
+        guessArray[i] = null as unknown as string; // Mark as used
       }
     }
 
@@ -114,7 +109,7 @@ export default function OnePlayer() {
         const targetIndex = targetArray.indexOf(guessArray[i]);
         if (targetIndex !== -1) {
           result[i] = "present";
-          targetArray[targetIndex] = null as any; // Mark as used
+          targetArray[targetIndex] = null as unknown as string; // Mark as used
         } else {
           result[i] = "absent";
         }
@@ -163,7 +158,7 @@ export default function OnePlayer() {
 
   const submitGuess = async () => {
     if (currentGuess.length !== 5) {
-      showDialog("short", "Word must be 5 letters!");
+      showDialog("short");
       return;
     }
 
@@ -174,7 +169,7 @@ export default function OnePlayer() {
 
     if (!isValid) {
       setIsValidating(false);
-      showDialog("invalid", "Word not in dictionary!");
+      showDialog("invalid");
       return;
     }
 
@@ -190,29 +185,29 @@ export default function OnePlayer() {
     // Check win condition
     if (evaluation.every((state) => state === "correct")) {
       setGameState("won");
-      showDialog(
-        "won",
-        `🎉 Congratulations! You won! The word was ${targetWord}`
-      );
+      showDialog("won");
     } else if (newGuesses.length >= 6) {
       setGameState("lost");
-      showDialog("lost", `😞 Game Over! You lost! The word was ${targetWord}`);
+      showDialog("lost");
     }
 
     setCurrentGuess([]);
   };
 
-  const handleKeyPress = (key: string) => {
-    if (gameState !== "playing" || isValidating) return;
+  const handleKeyPress = useCallback(
+    (key: string) => {
+      if (gameState !== "playing" || isValidating) return;
 
-    if (key === "ENTER") {
-      submitGuess();
-    } else if (key === "BACKSPACE") {
-      setCurrentGuess((prev) => prev.slice(0, -1));
-    } else if (key.length === 1 && currentGuess.length < 5) {
-      setCurrentGuess((prev) => [...prev, key.toUpperCase()]);
-    }
-  };
+      if (key === "ENTER") {
+        submitGuess();
+      } else if (key === "BACKSPACE") {
+        setCurrentGuess((prev) => prev.slice(0, -1));
+      } else if (key.length === 1 && currentGuess.length < 5) {
+        setCurrentGuess((prev) => [...prev, key.toUpperCase()]);
+      }
+    },
+    [gameState, isValidating, submitGuess, currentGuess.length]
+  );
 
   // Handle physical keyboard
   useEffect(() => {
@@ -237,7 +232,7 @@ export default function OnePlayer() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentGuess, gameState, isValidating, dialogOpen]);
+  }, [currentGuess, gameState, isValidating, dialogOpen, handleKeyPress]);
 
   const getDialogContent = () => {
     switch (dialogType) {
@@ -276,7 +271,6 @@ export default function OnePlayer() {
 
   return (
     <div className="container mx-auto">
-      {/* <div>{targetWord}</div> */}
       <div className="flex flex-col items-center justify-start min-h-screen gap-6 py-8">
         <Blanks
           guesses={guesses}
@@ -292,9 +286,9 @@ export default function OnePlayer() {
         />
 
         {gameState !== "playing" && (
-          <Button onClick={startNewGame} className="mt-4">
+          <CustomizedButton onClick={startNewGame} className="mt-4">
             Play Again
-          </Button>
+          </CustomizedButton>
         )}
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

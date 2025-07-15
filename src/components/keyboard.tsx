@@ -16,7 +16,7 @@ export default function Keyboard({
   const bottomRow = ["Z", "X", "C", "V", "B", "N", "M"];
 
   const getKeyClassName = (key: string) => {
-    let baseClasses =
+    const baseClasses =
       "min-w-[32px] sm:min-w-[40px] h-10 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs sm:text-sm uppercase transition-colors cursor-pointer select-none flex items-center justify-center touch-manipulation";
 
     if (correctKeys.includes(key)) {
