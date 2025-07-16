@@ -17,18 +17,18 @@ export default function Keyboard({
 
   const getKeyClassName = (key: string) => {
     const baseClasses =
-      "min-w-[32px] sm:min-w-[40px] h-14 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs sm:text-sm uppercase transition-colors cursor-pointer select-none flex items-center justify-center touch-manipulation";
+      "min-w-[32px] sm:min-w-[40px] h-14 sm:h-12 mx-0.5 sm:m-1 rounded font-bold text-xs sm:text-sm uppercase cursor-pointer select-none flex items-center justify-center touch-manipulation key-3d relative z-10";
 
     if (correctKeys.includes(key)) {
-      return `${baseClasses} bg-keyBoardCorrect text-white`;
+      return `${baseClasses} bg-keyBoardCorrect text-white shadow-lg`;
     }
 
     if (presentKeys.includes(key)) {
-      return `${baseClasses} bg-keyBoardPresent text-white`;
+      return `${baseClasses} bg-keyBoardPresent text-white shadow-lg`;
     }
 
     if (absentKeys.includes(key)) {
-      return `${baseClasses} bg-keyBoardAbsent text-white`;
+      return `${baseClasses} bg-keyBoardAbsent text-white shadow-lg`;
     }
 
     return `${baseClasses} bg-keyBoardBackground text-keyBoardText hover:bg-gray-100 dark:hover:bg-gray-600 active:bg-gray-500`;
