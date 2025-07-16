@@ -47,23 +47,24 @@ export default function Nav() {
         >
           <SmallLogo />
         </Link>
+
         <div className="flex flex-row gap-4 items-center">
           <Button
             variant="ghost"
             size="icon"
             onClick={handleThemeToggle}
-            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
+            className="md:h-12 md:w-12 h-10 w-10 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
             disabled={isAnimating}
           >
             <div
-              className={`transition-transform duration-300 ${
-                isAnimating ? "scale-90" : "scale-100"
+              className={`transition-all duration-300 ${
+                isAnimating ? "scale-90" : "md:scale-[150%] scale-[125%]"
               } ${effectiveTheme === "dark" ? "rotate-0" : "rotate-180"}`}
             >
               {effectiveTheme === "dark" ? (
-                <MoonStar className="h-10 scale-125 w-10 text-yellow-300" />
+                <MoonStar className="h-10 md:scale-[150%] scale-[125%] w-10 text-yellow-300" />
               ) : (
-                <Sun className="h-10 scale-125 w-10 text-amber-800" />
+                <Sun className="h-10 md:scale-[150%] scale-[125%] w-10 text-amber-700" />
               )}
             </div>
             <span className="sr-only">Toggle dark mode</span>
