@@ -4,6 +4,7 @@ import { StoreProvider } from "@/providers/store-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Nav from "@/components/nav";
 import Background from "@/components/background";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,6 +29,7 @@ export default function RootLayout({
           <StoreProvider>
             <Nav />
             {children}
+            <Toaster />
           </StoreProvider>
         </ThemeProvider>
       </body>

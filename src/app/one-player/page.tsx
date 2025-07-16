@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { VALID_WORDS } from "@/data/words";
 import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 
 type GameState = "playing" | "won" | "lost";
 type DialogType = "won" | "lost" | "invalid" | "short" | null;
@@ -267,11 +268,43 @@ export default function OnePlayer() {
     }
   };
 
+  const generateShareableResult = () => {
+    const attempts = guesses.length;
+
+    let result = `Wordle  ${attempts}/6\n\n`;
+
+    // Add emoji representation of each guess
+    guesses.forEach((guess, index) => {
+      const states = guessStates[index];
+      let emojiRow = "";
+
+      states.forEach((state) => {
+        switch (state) {
+          case "correct":
+            emojiRow += "🟩";
+            break;
+          case "present":
+            emojiRow += "🟨";
+            break;
+          case "absent":
+            emojiRow += "⬛";
+            break;
+          default:
+            emojiRow += "⬛";
+        }
+      });
+
+      result += emojiRow + "\n";
+    });
+
+    return result;
+  };
+
   const dialogContent = getDialogContent();
 
   return (
     <div className="container mx-auto">
-      {/* <div>{targetWord}</div> */}
+      <div>{targetWord}</div>
       <div className="flex relative flex-col items-center justify-start min-h-screen gap-6 py-8">
         <Blanks
           guesses={guesses}
@@ -310,6 +343,29 @@ export default function OnePlayer() {
               <DialogTitle className="text-2xl font-bold">
                 {dialogContent.title}
               </DialogTitle>
+              {dialogType === "won" && (
+                <div className="text-center space-y-4 flex flex-col ">
+                  <p className="text-sm text-gray-600 dark:text-gray-200">
+                    {dialogContent.description}
+                  </p>
+                  <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg font-mono text-sm whitespace-pre-line">
+                    {generateShareableResult()}
+                  </div>
+                  <CustomizedButton onClick={startNewGame} className="mt-4">
+                    Play Again
+                  </CustomizedButton>
+                </div>
+              )}
+              {dialogType === "lost" && (
+                <div className="text-center space-y-2">
+                  <p className="text-sm text-gray-600">
+                    {dialogContent.description}
+                  </p>
+                  <CustomizedButton onClick={startNewGame} className="mt-4">
+                    Play Again
+                  </CustomizedButton>
+                </div>
+              )}
             </DialogHeader>
           </DialogContent>
         </Dialog>
