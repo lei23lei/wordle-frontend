@@ -57,8 +57,8 @@
     --key-board-background: 0 0% 100%;
     --key-board-absent: 225 20% 70%;
     --key-board-text: 221 30% 36%;
-    --key-board-present: 45 85% 59%;
-    --key-board-correct: 96 43% 52%;
+    --key-board-present: 49 91% 53%;
+    --key-board-correct: 135 52% 42%;
   }
   .dark {
     --background: 0 0% 10%;
@@ -113,8 +113,8 @@
 
     --key-board-text: 0 0% 98%;
     --key-board-absent: 240 2% 23%;
-    --key-board-present: 45 85% 59%;
-    --key-board-correct: 96 43% 52%;
+    --key-board-present: 49 91% 47%;
+    --key-board-correct: 135 52% 42%;
   }
 }
 

@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { VALID_WORDS } from "@/data/words";
 import { useState, useEffect, useCallback } from "react";
-import { toast } from "sonner";
 
 type GameState = "playing" | "won" | "lost";
 type DialogType = "won" | "lost" | "invalid" | "short" | null;
@@ -130,44 +129,44 @@ export default function OnePlayer() {
     return result;
   };
 
-  const updateKeyboardState = (
-    guess: string[],
-    evaluation: ("correct" | "present" | "absent")[]
-  ) => {
-    const newCorrect = [...correctKeys];
-    const newPresent = [...presentKeys];
-    const newAbsent = [...absentKeys];
+  const updateKeyboardState = useCallback(
+    (guess: string[], evaluation: ("correct" | "present" | "absent")[]) => {
+      const newCorrect = [...correctKeys];
+      const newPresent = [...presentKeys];
+      const newAbsent = [...absentKeys];
 
-    guess.forEach((letter, index) => {
-      if (evaluation[index] === "correct" && !newCorrect.includes(letter)) {
-        newCorrect.push(letter);
-        // Remove from present if it was there
-        const presentIndex = newPresent.indexOf(letter);
-        if (presentIndex !== -1) {
-          newPresent.splice(presentIndex, 1);
+      guess.forEach((letter, index) => {
+        if (evaluation[index] === "correct" && !newCorrect.includes(letter)) {
+          newCorrect.push(letter);
+          // Remove from present if it was there
+          const presentIndex = newPresent.indexOf(letter);
+          if (presentIndex !== -1) {
+            newPresent.splice(presentIndex, 1);
+          }
+        } else if (
+          evaluation[index] === "present" &&
+          !newCorrect.includes(letter) &&
+          !newPresent.includes(letter)
+        ) {
+          newPresent.push(letter);
+        } else if (
+          evaluation[index] === "absent" &&
+          !newCorrect.includes(letter) &&
+          !newPresent.includes(letter) &&
+          !newAbsent.includes(letter)
+        ) {
+          newAbsent.push(letter);
         }
-      } else if (
-        evaluation[index] === "present" &&
-        !newCorrect.includes(letter) &&
-        !newPresent.includes(letter)
-      ) {
-        newPresent.push(letter);
-      } else if (
-        evaluation[index] === "absent" &&
-        !newCorrect.includes(letter) &&
-        !newPresent.includes(letter) &&
-        !newAbsent.includes(letter)
-      ) {
-        newAbsent.push(letter);
-      }
-    });
+      });
 
-    setCorrectKeys(newCorrect);
-    setPresentKeys(newPresent);
-    setAbsentKeys(newAbsent);
-  };
+      setCorrectKeys(newCorrect);
+      setPresentKeys(newPresent);
+      setAbsentKeys(newAbsent);
+    },
+    [correctKeys, presentKeys, absentKeys]
+  );
 
-  const submitGuess = async () => {
+  const submitGuess = useCallback(async () => {
     if (currentGuess.length !== 5) {
       showNotification("Too Short");
       return;
@@ -203,7 +202,15 @@ export default function OnePlayer() {
     }
 
     setCurrentGuess([]);
-  };
+  }, [
+    currentGuess,
+    guesses,
+    guessStates,
+    targetWord,
+    showNotification,
+    showDialog,
+    updateKeyboardState,
+  ]);
 
   const handleKeyPress = useCallback(
     (key: string) => {
@@ -332,7 +339,7 @@ export default function OnePlayer() {
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent
-            className={`sm:max-w-md focus:outline-none ${
+            className={`w-[90%] sm:max-w-md focus:outline-none ${
               dialogType !== "won" && dialogType !== "lost"
                 ? "[&>button]:hidden"
                 : ""
