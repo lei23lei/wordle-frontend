@@ -3,6 +3,7 @@
 import Blanks from "@/components/blanks";
 import Keyboard from "@/components/keyboard";
 import CustomizedButton from "@/components/customized-button";
+import Confetti from "@/components/confetti";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,7 @@ export default function OnePlayer() {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogType, setDialogType] = useState<DialogType>(null);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
+  const [confettiOpen, setConfettiOpen] = useState<boolean>(false);
 
   // Keyboard state tracking
   const [correctKeys, setCorrectKeys] = useState<string[]>([]);
@@ -53,6 +55,7 @@ export default function OnePlayer() {
     setDialogOpen(false);
     setDialogType(null);
     setNotificationMessage("");
+    setConfettiOpen(false);
   };
 
   const showDialog = (type: DialogType) => {
@@ -196,6 +199,7 @@ export default function OnePlayer() {
     if (evaluation.every((state) => state === "correct")) {
       setGameState("won");
       showDialog("won");
+      setConfettiOpen(true);
     } else if (newGuesses.length >= 6) {
       setGameState("lost");
       showDialog("lost");
@@ -376,6 +380,7 @@ export default function OnePlayer() {
             </DialogHeader>
           </DialogContent>
         </Dialog>
+        <Confetti isVisible={confettiOpen} />
       </div>
     </div>
   );
