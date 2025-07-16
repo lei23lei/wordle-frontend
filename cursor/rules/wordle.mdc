@@ -1,0 +1,35 @@
+---
+description: "Wordle guidelines"
+globs:
+  - "**/*.tsx"
+  - "**/*.ts"
+  - "**/*.js"
+alwaysApply: false
+---
+
+# UI Styling Rules
+
+1. Use **Next.js** as the frontend framework.
+2. Use **shadcn/ui** for all UI components and styling.
+3. Use **Tailwind CSS** via shadcn for consistent spacing, layout, and color theming.
+4. Apply responsive design — must work on mobile, tablet, and desktop.
+5. Enable **dark mode** support via Tailwind’s dark variant.
+
+# Game Mode Rules
+
+## Single Player
+
+- Allow unlimited plays (unlike official Wordle).
+- A new word is generated after each successful or failed attempt.
+- Show keyboard feedback for correct/incorrect letters.
+
+## Two Player
+
+1. Two player modes allow competition to guess the word first.
+2. Each player is assigned a unique `roomId`.
+3. Players can:
+   - Share their `roomId` for others to join.
+   - Input another user’s `roomId` to join their game.
+4. Each room supports **a maximum of 2 players**.
+5. Game starts when both players are connected.
+6. Backend will use WebSocket to sync guesses and declare the winner in real time.
