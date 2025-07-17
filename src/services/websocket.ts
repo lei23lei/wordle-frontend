@@ -20,7 +20,10 @@ class WebSocketService {
   private onDisconnectCallback?: () => void;
   private onGameStartedCallback?: (gameState: GameState) => void;
   private onTurnChangedCallback?: (event: TurnChangeEvent) => void;
+  private onGuessSubmittedCallback?: (event: TurnChangeEvent) => void;
+  private onGameStateUpdateCallback?: (gameState: any) => void;
   private onGameOverCallback?: (event: GameOverEvent) => void;
+  private onGameRestartedCallback?: (gameState: any) => void;
   private onPlayerJoinedCallback?: (event: PlayerJoinedEvent) => void;
   private onPlayerLeftCallback?: (event: PlayerLeftEvent) => void;
   private onErrorCallback?: (event: ErrorEvent) => void;
@@ -45,8 +48,17 @@ class WebSocketService {
     this.socket.on("turnChanged", (event: TurnChangeEvent) => {
       this.onTurnChangedCallback?.(event);
     });
+    this.socket.on("guessSubmitted", (event: TurnChangeEvent) => {
+      this.onGuessSubmittedCallback?.(event);
+    });
+    this.socket.on("gameStateUpdate", (gameState: any) => {
+      this.onGameStateUpdateCallback?.(gameState);
+    });
     this.socket.on("gameOver", (event: GameOverEvent) => {
       this.onGameOverCallback?.(event);
+    });
+    this.socket.on("gameRestarted", (gameState: any) => {
+      this.onGameRestartedCallback?.(gameState);
     });
     this.socket.on("playerJoined", (event: PlayerJoinedEvent) => {
       this.onPlayerJoinedCallback?.(event);
@@ -93,6 +105,11 @@ class WebSocketService {
     this.socket.emit("submitGuess", guess);
   }
 
+  restartGame() {
+    if (!this.socket) return;
+    this.socket.emit("restartGame");
+  }
+
   getRoomStatus(callback: (response: RoomStatus) => void) {
     if (!this.socket) {
       callback({ success: false, error: "Not connected" });
@@ -114,8 +131,17 @@ class WebSocketService {
   onTurnChanged(callback: (event: TurnChangeEvent) => void) {
     this.onTurnChangedCallback = callback;
   }
+  onGuessSubmitted(callback: (event: TurnChangeEvent) => void) {
+    this.onGuessSubmittedCallback = callback;
+  }
+  onGameStateUpdate(callback: (gameState: any) => void) {
+    this.onGameStateUpdateCallback = callback;
+  }
   onGameOver(callback: (event: GameOverEvent) => void) {
     this.onGameOverCallback = callback;
+  }
+  onGameRestarted(callback: (gameState: any) => void) {
+    this.onGameRestartedCallback = callback;
   }
   onPlayerJoined(callback: (event: PlayerJoinedEvent) => void) {
     this.onPlayerJoinedCallback = callback;

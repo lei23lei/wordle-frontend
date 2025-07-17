@@ -33,19 +33,28 @@ export interface JoinRoomResponse {
 }
 
 export interface GameState {
-  currentTurn: string;
+  gameStarted: boolean;
+  gameOver: boolean;
+  winner: string | null;
+  word?: string;
   players: string[];
+  playerGuessStates: Record<string, ("correct" | "present" | "absent")[][]>;
+  playerGuessesCount: Record<string, number>;
+  myGuesses: string[];
+  myGuessStates: ("correct" | "present" | "absent")[][];
 }
 
 export interface TurnChangeEvent {
   currentTurn: string;
   playerGuesses: Record<string, string[]>;
+  playerGuessStates: Record<string, ("correct" | "present" | "absent")[][]>;
 }
 
 export interface GameOverEvent {
   winner: string | null;
   word: string;
   playerGuesses: Record<string, string[]>;
+  playerGuessStates: Record<string, ("correct" | "present" | "absent")[][]>;
 }
 
 export interface PlayerJoinedEvent {

@@ -315,6 +315,7 @@ export default function OnePlayer() {
 
   return (
     <div className="container mx-auto">
+      <div className="text-center text-2xl font-bold">{targetWord}</div>
       <div className="flex relative flex-col items-center justify-start min-h-screen gap-6 py-8">
         <Blanks
           guesses={guesses}

@@ -15,7 +15,7 @@ export function Row({ letters, states, shake }: RowProps) {
 
   const getLetterClassName = (state: string) => {
     const baseClasses =
-      "w-12 h-12 sm:w-16 sm:h-16 border-2 sm:border-4 rounded-md flex items-center justify-center text-lg sm:text-2xl font-bold uppercase transition-all duration-300";
+      "w-12 h-12 sm:w-14 sm:h-14 border-2 sm:border-4 rounded-md flex items-center justify-center text-lg sm:text-2xl font-bold uppercase transition-all duration-300";
 
     switch (state) {
       case "correct":
