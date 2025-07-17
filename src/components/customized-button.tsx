@@ -6,6 +6,7 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 export default function CustomizedButton({
@@ -13,6 +14,7 @@ export default function CustomizedButton({
   onClick,
   className = "",
   type = "button",
+  disabled = false,
 }: ButtonProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -60,6 +62,7 @@ export default function CustomizedButton({
         boxShadow,
       }}
       onClick={onClick}
+      disabled={disabled}
     >
       {/* Optional: add a subtle wood texture overlay inside the button */}
       <span

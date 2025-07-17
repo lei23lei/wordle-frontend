@@ -14,6 +14,7 @@ alwaysApply: false
 3. Use **Tailwind CSS** via shadcn for consistent spacing, layout, and color theming.
 4. Apply responsive design — must work on mobile, tablet, and desktop.
 5. Enable **dark mode** support via Tailwind’s dark variant.
+6. Icon I prefer **lucide**.
 
 # Game Mode Rules
 
