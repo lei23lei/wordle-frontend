@@ -47,6 +47,7 @@ export default function TwoPlayerPage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [gameOverReason, setGameOverReason] = useState<string | null>(null);
 
   // Keyboard state
   const [correctKeys, setCorrectKeys] = useState<string[]>([]);
@@ -138,7 +139,9 @@ export default function TwoPlayerPage() {
       setPresentKeys([]);
       setAbsentKeys([]);
       setNotificationMessage("");
-      setStatus("Game restarted! Both players can play simultaneously.");
+      setDialogOpen(false);
+      setGameOverReason(null);
+      setStatus("Game restarted!");
     });
 
     websocketService.onGuessSubmitted((event) => {
@@ -152,6 +155,7 @@ export default function TwoPlayerPage() {
       setGameOver(true);
       setWinner(event.winner);
       setTargetWord(event.word);
+      setGameOverReason(event.quitReason || null);
       setDialogOpen(true);
 
       // Update final guesses
@@ -204,6 +208,19 @@ export default function TwoPlayerPage() {
         event.message.includes("Not your turn")
       ) {
         showNotification(event.message);
+
+        // For dictionary errors, restore the guess so user can edit it
+        if (event.message.includes("Not in dictionary")) {
+          // The invalid guess was already optimistically added to myGuesses,
+          // we need to remove it and restore it to currentGuess
+          setMyGuesses((prev) => {
+            const lastGuess = prev[prev.length - 1];
+            if (lastGuess) {
+              setCurrentGuess(lastGuess.split(""));
+            }
+            return prev.slice(0, -1); // Remove the last (invalid) guess
+          });
+        }
       } else {
         setError(event.message);
       }
@@ -379,10 +396,21 @@ export default function TwoPlayerPage() {
     setAbsentKeys([]);
     setNotificationMessage("");
     setDialogOpen(false);
+    setGameOverReason(null);
   };
 
   const getDialogContent = () => {
     const myId = websocketService.socketId;
+
+    // Check if opponent quit
+    if (gameOverReason === "opponent_quit") {
+      return {
+        title: "🚪 Opponent Left",
+        description: `Your opponent quit the game. The word was ${targetWord}`,
+        className: "text-orange-600",
+      };
+    }
+
     if (winner === myId) {
       return {
         title: "🎉 Congratulations!",
@@ -491,7 +519,7 @@ export default function TwoPlayerPage() {
       <div className="flex flex-col items-center justify-start min-h-screen gap-4">
         {/* Header */}
         <div className="text-center">
-          <div className="text-lg">{status}</div>
+          {/* <div className="text-lg">{status}</div> */}
           {gameOver && targetWord && (
             <div className="text-lg font-semibold mt-0">
               The word was:{" "}

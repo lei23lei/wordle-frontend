@@ -55,6 +55,7 @@ export interface GameOverEvent {
   word: string;
   playerGuesses: Record<string, string[]>;
   playerGuessStates: Record<string, ("correct" | "present" | "absent")[][]>;
+  quitReason?: string;
 }
 
 export interface PlayerJoinedEvent {
