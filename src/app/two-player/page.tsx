@@ -587,11 +587,12 @@ export default function TwoPlayerPage() {
                   {getDialogContent().description}
                 </p>
                 <div className="flex flex-col gap-2">
-                  {isHost && (
+                  {gameOverReason !== "opponent_quit" && (
                     <CustomizedButton onClick={handleRestartGame}>
                       Play Again
                     </CustomizedButton>
                   )}
+
                   <Link href="/">
                     <CustomizedButton>Return Home</CustomizedButton>
                   </Link>
