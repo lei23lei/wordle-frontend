@@ -402,24 +402,24 @@ export default function TwoPlayerPage() {
 
   if (gamePhase === "lobby") {
     return (
-      <div className="flex flex-col items-center justify-center  px-4 py-6 sm:py-8 h-[calc(100vh-150px)]">
-        <div className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 md:p-6">
-          <div className="text-center mb-4 sm:mb-6 md:mb-6">
-            <h1 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-2">
+      <div className="flex flex-col items-center justify-center px-4 py-4 sm:py-6 h-[calc(100vh-150px)]">
+        <div className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-5">
+          <div className="text-center mb-3 sm:mb-4 md:mb-5">
+            <h1 className="text-lg sm:text-xl md:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white mb-1">
               Two Player Mode
             </h1>
-            <p className="text-xs sm:text-sm md:text-sm lg:text-base text-gray-600 dark:text-gray-300">
+            <p className="text-xs sm:text-sm md:text-sm lg:text-sm text-gray-600 dark:text-gray-300">
               Challenge a friend to a WORDLE duel!
             </p>
           </div>
 
           {!roomId ? (
-            <div className="space-y-4 sm:space-y-6">
-              <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="space-y-2 sm:space-y-3">
                 <CustomizedButton
                   onClick={handleCreateRoom}
                   disabled={!connected}
-                  className="w-full py-2 sm:py-3 text-sm sm:text-base md:text-base lg:text-lg font-semibold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="w-full py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   {!connected ? "Connecting..." : "Create Room"}
                 </CustomizedButton>
@@ -428,16 +428,16 @@ export default function TwoPlayerPage() {
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
                   </div>
-                  <div className="relative flex justify-center text-xs sm:text-sm">
-                    <span className="px-2  backdrop-blur-sm text-gray-500 dark:text-gray-400">
+                  <div className="relative flex justify-center text-xs sm:text-xs">
+                    <span className="px-2 backdrop-blur-sm text-gray-500 dark:text-gray-400">
                       or join existing room
                     </span>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
                   <input
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-base sm:text-lg md:text-base lg:text-lg tracking-wider"
+                    className="w-full px-3 sm:px-3 py-2 sm:py-2.5 border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-sm sm:text-base md:text-base lg:text-base tracking-wider"
                     placeholder="ROOM ID"
                     value={inputRoomId}
                     onChange={(e) => setInputRoomId(e.target.value)}
@@ -447,7 +447,7 @@ export default function TwoPlayerPage() {
                   <CustomizedButton
                     onClick={handleJoinRoom}
                     disabled={!connected || !inputRoomId}
-                    className="w-full sm:w-40 px-4 sm:px-6 text-center py-2 sm:py-3 text-sm sm:text-base md:text-base lg:text-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
+                    className="w-full sm:w-32 px-3 sm:px-4 text-center py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
                   >
                     Join
                   </CustomizedButton>
@@ -455,40 +455,40 @@ export default function TwoPlayerPage() {
               </div>
             </div>
           ) : (
-            <div className="space-y-4 sm:space-y-6">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-3 sm:p-4 md:p-4 lg:p-6 border border-blue-200 dark:border-gray-600">
-                <div className="text-center space-y-3 sm:space-y-4">
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-                    <span className="text-sm sm:text-base md:text-lg font-semibold text-gray-700 dark:text-gray-300">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-2.5 sm:p-3 md:p-3 lg:p-4 border border-blue-200 dark:border-gray-600">
+                <div className="text-center space-y-2 sm:space-y-3">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2">
+                    <span className="text-xs sm:text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
                       Room ID:
                     </span>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 px-2 sm:px-3 py-1 sm:py-2">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-base sm:text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 px-2 sm:px-2.5 py-1 sm:py-1.5">
                         {roomId}
                       </span>
                       <button
                         onClick={handleCopyRoomId}
-                        className="p-2 sm:p-3 hover:bg-blue-100 dark:hover:bg-gray-600 transition-colors duration-200"
+                        className="p-1.5 sm:p-2 hover:bg-blue-100 dark:hover:bg-gray-600 transition-colors duration-200"
                         title="Copy Room ID"
                         type="button"
                       >
-                        <Copy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
+                        <Copy className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 dark:text-blue-400" />
                       </button>
                     </div>
                   </div>
 
                   {copied && (
-                    <div className="text-green-600 dark:text-green-400 text-xs sm:text-sm font-medium animate-pulse">
+                    <div className="text-green-600 dark:text-green-400 text-xs sm:text-xs font-medium animate-pulse">
                       ✓ Copied to clipboard!
                     </div>
                   )}
 
-                  <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center justify-center gap-1.5">
                     <div className="flex space-x-1">
                       {[...Array(2)].map((_, i) => (
                         <div
                           key={i}
-                          className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${
+                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ${
                             i < playerCount
                               ? "bg-green-500"
                               : "bg-gray-300 dark:bg-gray-600"
@@ -496,19 +496,19 @@ export default function TwoPlayerPage() {
                         />
                       ))}
                     </div>
-                    <span className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 font-medium">
+                    <span className="text-xs sm:text-xs md:text-sm text-gray-600 dark:text-gray-300 font-medium">
                       {playerCount}/2 Players
                     </span>
                   </div>
 
-                  <div className="text-green-600 dark:text-green-400 font-medium text-xs sm:text-sm md:text-base">
+                  <div className="text-green-600 dark:text-green-400 font-medium text-xs sm:text-xs md:text-sm">
                     {status}
                   </div>
 
                   {isHost && playerCount === 2 && (
                     <CustomizedButton
                       onClick={handleStartGame}
-                      className="w-full py-2 sm:py-3 text-sm sm:text-base md:text-base lg:text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="w-full py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base font-semibold bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                     >
                       Start Game
                     </CustomizedButton>
@@ -519,22 +519,22 @@ export default function TwoPlayerPage() {
           )}
 
           {error && (
-            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-              <div className="text-red-600 dark:text-red-400 text-xs sm:text-sm font-medium text-center">
+            <div className="mt-2 sm:mt-3 p-1.5 sm:p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+              <div className="text-red-600 dark:text-red-400 text-xs sm:text-xs font-medium text-center">
                 {error}
               </div>
             </div>
           )}
 
           {!connected && (
-            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-              <div className="text-yellow-600 dark:text-yellow-400 text-xs sm:text-sm font-medium text-center">
+            <div className="mt-2 sm:mt-3 p-1.5 sm:p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+              <div className="text-yellow-600 dark:text-yellow-400 text-xs sm:text-xs font-medium text-center">
                 Connecting to server...
               </div>
             </div>
           )}
 
-          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
             <Link
               href="/"
               onClick={() => {
@@ -544,7 +544,7 @@ export default function TwoPlayerPage() {
                 websocketService.disconnect();
               }}
             >
-              <CustomizedButton className="w-full py-2 sm:py-3 text-xs sm:text-sm md:text-sm lg:text-base text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
+              <CustomizedButton className="w-full py-2 sm:py-2.5 text-xs sm:text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-300  bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
                 ← Return Home
               </CustomizedButton>
             </Link>
