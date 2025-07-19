@@ -29,8 +29,6 @@ export default function TwoPlayerPage() {
 
   // Game state
   const [gamePhase, setGamePhase] = useState<GamePhase>("lobby");
-  const [currentTurn, setCurrentTurn] = useState<string | null>(null);
-  const [players, setPlayers] = useState<string[]>([]);
   const [myGuesses, setMyGuesses] = useState<string[]>([]);
   const [opponentGuesses, setOpponentGuesses] = useState<string[]>([]);
   const [myGuessStates, setMyGuessStates] = useState<
@@ -40,7 +38,6 @@ export default function TwoPlayerPage() {
     ("correct" | "present" | "absent")[][]
   >([]);
   const [currentGuess, setCurrentGuess] = useState<string[]>([]);
-  const [isMyTurn, setIsMyTurn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [targetWord, setTargetWord] = useState<string>("");
@@ -74,7 +71,6 @@ export default function TwoPlayerPage() {
     websocketService.onGameStarted((gameState) => {
       console.log("Game started event received:", gameState);
       setGamePhase("playing");
-      setPlayers(gameState.players);
       setMyGuesses(gameState.myGuesses || []);
       setMyGuessStates(gameState.myGuessStates || []);
       setOpponentGuesses([]);
@@ -170,31 +166,6 @@ export default function TwoPlayerPage() {
       if (myId && event.playerGuesses && event.playerGuesses[myId]) {
         setMyGuesses(event.playerGuesses[myId]);
       }
-
-      setPlayers((currentPlayers) => {
-        const opponentId = currentPlayers.find((p) => p !== myId);
-        if (
-          opponentId &&
-          event.playerGuesses &&
-          event.playerGuesses[opponentId]
-        ) {
-          setOpponentGuesses(event.playerGuesses[opponentId]);
-        }
-
-        if (myId && event.playerGuessStates && event.playerGuessStates[myId]) {
-          setMyGuessStates(event.playerGuessStates[myId]);
-        }
-
-        if (
-          opponentId &&
-          event.playerGuessStates &&
-          event.playerGuessStates[opponentId]
-        ) {
-          setOpponentGuessStates(event.playerGuessStates[opponentId]);
-        }
-
-        return currentPlayers;
-      });
 
       if (event.winner === myId) {
         setStatus("🎉 You won!");
@@ -387,34 +358,6 @@ export default function TwoPlayerPage() {
     }
   };
 
-  const resetGame = () => {
-    setGamePhase("lobby");
-    setRoomId("");
-    setInputRoomId("");
-    setPlayerCount(0);
-    setIsHost(false);
-    setStatus(null);
-    setError(null);
-    setCurrentTurn(null);
-    setPlayers([]);
-    setMyGuesses([]);
-    setOpponentGuesses([]);
-    setMyGuessStates([]);
-    setOpponentGuessStates([]);
-    setCurrentGuess([]);
-    setIsMyTurn(false);
-    setGameOver(false);
-    setWinner(null);
-    setTargetWord("");
-    setShowConfetti(false);
-    setCorrectKeys([]);
-    setPresentKeys([]);
-    setAbsentKeys([]);
-    setNotificationMessage("");
-    setDialogOpen(false);
-    setGameOverReason(null);
-  };
-
   const getDialogContent = () => {
     const myId = websocketService.socketId;
 
@@ -446,10 +389,6 @@ export default function TwoPlayerPage() {
         className: "text-gray-600",
       };
     }
-  };
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
   };
 
   // Convert backend guess states to frontend format

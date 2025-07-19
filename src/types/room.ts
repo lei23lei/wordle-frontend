@@ -42,6 +42,17 @@ export interface GameState {
   playerGuessesCount: Record<string, number>;
   myGuesses: string[];
   myGuessStates: ("correct" | "present" | "absent")[][];
+  playerGuesses?: Record<string, string[]>;
+  quitReason?: string;
+}
+
+// GameStateUpdate and GameRestartEvent are the same as GameState
+// Using type aliases instead of empty interfaces
+export type GameStateUpdate = GameState;
+export type GameRestartEvent = GameState;
+
+export interface ForceReturnHomeEvent {
+  message: string;
 }
 
 export interface TurnChangeEvent {
