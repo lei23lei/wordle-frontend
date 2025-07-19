@@ -156,6 +156,13 @@ export default function TwoPlayerPage() {
       setWinner(event.winner);
       setTargetWord(event.word);
       setGameOverReason(event.quitReason || null);
+
+      // If this is a quit notification, update the dialog immediately
+      if (event.quitReason === "opponent_quit") {
+        setDialogOpen(true);
+        return; // Don't process final guesses if opponent quit
+      }
+
       setDialogOpen(true);
 
       // Update final guesses
@@ -197,6 +204,15 @@ export default function TwoPlayerPage() {
       } else {
         setStatus("😞 You lost!");
       }
+    });
+
+    websocketService.onForceReturnHome((event) => {
+      console.log("Force return home:", event);
+      showNotification(event.message || "Returning to home");
+      // Auto-navigate to home after a short delay
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     });
 
     websocketService.onError((event) => {
@@ -506,7 +522,15 @@ export default function TwoPlayerPage() {
           <div className="text-gray-400">Connecting to server...</div>
         )}
         <div className="mt-8">
-          <Link href="/">
+          <Link
+            href="/"
+            onClick={() => {
+              if (roomId) {
+                websocketService.leaveRoom();
+              }
+              websocketService.disconnect();
+            }}
+          >
             <CustomizedButton>Return Home</CustomizedButton>
           </Link>
         </div>
@@ -543,7 +567,7 @@ export default function TwoPlayerPage() {
             />
             {/* Notification for my board */}
             {notificationMessage && (
-              <div className="absolute -top-4 h-10 w-40 flex items-center border border-gray-300 justify-center font-bold bg-gray-50 rounded-sm shadow-md text-black z-10">
+              <div className="absolute -top-4 h-10 px-2 w-auto flex items-center border border-gray-300 justify-center font-bold bg-gray-50 rounded-sm shadow-md text-black z-10">
                 {notificationMessage}
               </div>
             )}
@@ -593,7 +617,13 @@ export default function TwoPlayerPage() {
                     </CustomizedButton>
                   )}
 
-                  <Link href="/">
+                  <Link
+                    href="/"
+                    onClick={() => {
+                      websocketService.leaveRoom();
+                      websocketService.disconnect();
+                    }}
+                  >
                     <CustomizedButton>Return Home</CustomizedButton>
                   </Link>
                 </div>

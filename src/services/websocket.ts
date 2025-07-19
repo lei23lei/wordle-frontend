@@ -24,6 +24,7 @@ class WebSocketService {
   private onGameStateUpdateCallback?: (gameState: any) => void;
   private onGameOverCallback?: (event: GameOverEvent) => void;
   private onGameRestartedCallback?: (gameState: any) => void;
+  private onForceReturnHomeCallback?: (event: any) => void;
   private onPlayerJoinedCallback?: (event: PlayerJoinedEvent) => void;
   private onPlayerLeftCallback?: (event: PlayerLeftEvent) => void;
   private onErrorCallback?: (event: ErrorEvent) => void;
@@ -59,6 +60,9 @@ class WebSocketService {
     });
     this.socket.on("gameRestarted", (gameState: any) => {
       this.onGameRestartedCallback?.(gameState);
+    });
+    this.socket.on("forceReturnHome", (event: any) => {
+      this.onForceReturnHomeCallback?.(event);
     });
     this.socket.on("playerJoined", (event: PlayerJoinedEvent) => {
       this.onPlayerJoinedCallback?.(event);
@@ -110,6 +114,11 @@ class WebSocketService {
     this.socket.emit("restartGame");
   }
 
+  leaveRoom() {
+    if (!this.socket) return;
+    this.socket.emit("leaveRoom");
+  }
+
   getRoomStatus(callback: (response: RoomStatus) => void) {
     if (!this.socket) {
       callback({ success: false, error: "Not connected" });
@@ -142,6 +151,9 @@ class WebSocketService {
   }
   onGameRestarted(callback: (gameState: any) => void) {
     this.onGameRestartedCallback = callback;
+  }
+  onForceReturnHome(callback: (event: any) => void) {
+    this.onForceReturnHomeCallback = callback;
   }
   onPlayerJoined(callback: (event: PlayerJoinedEvent) => void) {
     this.onPlayerJoinedCallback = callback;
