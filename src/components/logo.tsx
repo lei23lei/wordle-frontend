@@ -24,9 +24,9 @@ export default function Logo() {
         <span
           key={i}
           className={`
-            w-14 h-14 text-3xl
-            md:w-20 md:h-20 md:text-5xl
-            lg:w-28 lg:h-28 lg:text-7xl
+            w-10 h-10 text-2xl
+            md:w-16 md:h-16 md:text-4xl
+            lg:w-20 lg:h-20 lg:text-5xl
             rounded-md font-bold flex items-center justify-center shadow-sm
             ${l.color}
             transition-all

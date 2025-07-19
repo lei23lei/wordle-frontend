@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import Nav from "@/components/nav";
 import Background from "@/components/background";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="">
-      <body className="bg-background max-h-screen ">
+      <body className="bg-background   ">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -27,8 +28,11 @@ export default function RootLayout({
         >
           <Background />
           <StoreProvider>
-            <Nav />
-            {children}
+            <div className="flex  flex-col h-[calc(100vh-20px)]">
+              <Nav />
+              {children}
+            </div>
+            <Footer />
             <Toaster />
           </StoreProvider>
         </ThemeProvider>

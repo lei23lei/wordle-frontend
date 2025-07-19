@@ -403,9 +403,9 @@ export default function TwoPlayerPage() {
   if (gamePhase === "lobby") {
     return (
       <div className="flex flex-col items-center justify-center px-4 py-4 sm:py-6 h-[calc(100vh-150px)]">
-        <div className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-5">
+        <div className="w-full max-w-xs sm:max-w-sm md:max-w-sm  bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-5">
           <div className="text-center mb-3 sm:mb-4 md:mb-5">
-            <h1 className="text-lg sm:text-xl md:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white mb-1">
+            <h1 className="text-lg sm:text-xl md:text-xl  font-bold text-gray-800 dark:text-white mb-1">
               Two Player Mode
             </h1>
             <p className="text-xs sm:text-sm md:text-sm lg:text-sm text-gray-600 dark:text-gray-300">
@@ -437,7 +437,7 @@ export default function TwoPlayerPage() {
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
                   <input
-                    className="w-full px-3 sm:px-3 py-2 sm:py-2.5 border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-sm sm:text-base md:text-base lg:text-base tracking-wider"
+                    className="w-full px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-sm sm:text-base md:text-base lg:text-base tracking-wider"
                     placeholder="ROOM ID"
                     value={inputRoomId}
                     onChange={(e) => setInputRoomId(e.target.value)}
@@ -456,7 +456,7 @@ export default function TwoPlayerPage() {
             </div>
           ) : (
             <div className="space-y-3 sm:space-y-4">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-2.5 sm:p-3 md:p-3 lg:p-4 border border-blue-200 dark:border-gray-600">
+              <div className="bg-white/50 dark:bg-gray-700 p-2.5 sm:p-3 md:p-3 lg:p-4 border border-blue-200 rounded-md dark:border-gray-600">
                 <div className="text-center space-y-2 sm:space-y-3">
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2">
                     <span className="text-xs sm:text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
