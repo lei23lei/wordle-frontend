@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="">
-      <body className="bg-background h-screen overflow-hidden">
+      <body className="bg-background max-h-screen ">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -463,7 +463,7 @@ export default function TwoPlayerPage() {
 
   if (gamePhase === "lobby") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-transparent">
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
         <h1 className="text-4xl font-bold mb-4 text-center">Two Player Mode</h1>
         <div className="mb-6 flex flex-col gap-4 w-full max-w-xs">
           <CustomizedButton
@@ -540,7 +540,7 @@ export default function TwoPlayerPage() {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex flex-col items-center justify-start min-h-screen gap-4">
+      <div className="flex flex-col items-center justify-start  gap-4">
         {/* Header */}
         <div className="text-center">
           {/* <div className="text-lg">{status}</div> */}
@@ -585,6 +585,14 @@ export default function TwoPlayerPage() {
             />
           </div>
         </div>
+        {/* Play Again button - only show when game is over and opponent didn't quit */}
+        {gameOver && gameOverReason !== "opponent_quit" && (
+          <div className="flex flex-col items-center justify-center">
+            <CustomizedButton onClick={handleRestartGame}>
+              Play Again
+            </CustomizedButton>
+          </div>
+        )}
 
         {/* Keyboard */}
         <div className="w-full max-w-lg">
