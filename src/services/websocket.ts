@@ -32,7 +32,7 @@ class WebSocketService {
   private onPlayerLeftCallback?: (event: PlayerLeftEvent) => void;
   private onErrorCallback?: (event: ErrorEvent) => void;
 
-  connect(serverUrl: string = "http://localhost:8000") {
+  connect(serverUrl: string = process.env.NEXT_PUBLIC_API_URL!) {
     if (this.socket) {
       this.disconnect();
     }

@@ -8,8 +8,8 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "My Wordle",
-  description: "My Wordle",
+  title: "Peter Wordle",
+  description: "Peter Wordle",
 };
 
 export default function RootLayout({
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="">
-      <body className="bg-background   ">
+      <body className="bg-background  max-h-screen  ">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -28,10 +28,8 @@ export default function RootLayout({
         >
           <Background />
           <StoreProvider>
-            <div className="flex  flex-col h-[calc(100vh-20px)]">
-              <Nav />
-              {children}
-            </div>
+            <Nav />
+            {children}
             <Footer />
             <Toaster />
           </StoreProvider>

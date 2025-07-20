@@ -1,8 +1,26 @@
 export default function Logo() {
-  // "MY" letters - same style as WORDLE
-  const myLetters = [
-    { char: "M", color: "bg-green-600 text-white" },
-    { char: "Y", color: "bg-yellow-400 text-black" },
+  // "PETER" letters - using button gradient colors
+  const peterLetters = [
+    {
+      char: "P",
+      color: "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+    },
+    {
+      char: "E",
+      color: "bg-gradient-to-r from-blue-500 to-indigo-600 text-white",
+    },
+    {
+      char: "T",
+      color: "bg-gradient-to-r from-purple-500 to-pink-600 text-white",
+    },
+    {
+      char: "E",
+      color: "bg-gradient-to-r from-green-500 to-emerald-600 text-white",
+    },
+    {
+      char: "R",
+      color: "bg-gradient-to-r from-blue-500 to-indigo-600 text-white",
+    },
   ];
 
   // "WORDLE" with colored squares
@@ -23,15 +41,15 @@ export default function Logo() {
 
   return (
     <div className="flex flex-col items-center gap-1 select-none">
-      {/* MY row */}
+      {/* PETER row */}
       <div className="flex items-end gap-1">
-        {myLetters.map((l, i) => (
+        {peterLetters.map((l, i) => (
           <span
-            key={`my-${i}`}
+            key={`peter-${i}`}
             className={`
               w-8 h-8 text-lg
               md:w-12 md:h-12 md:text-2xl
-              lg:w-16 lg:h-16 lg:text-3xl
+              lg:w-10 lg:h-10 lg:text-xl
               rounded-md font-bold flex items-center justify-center shadow-sm
               ${l.color}
               transition-all
