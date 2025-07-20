@@ -1,11 +1,11 @@
 export interface Player {
   id: string;
-  roomId: string;
+  roomId: string; // 6-digit string room ID
   isHost: boolean;
 }
 
 export interface Room {
-  id: string;
+  id: string; // 6-digit string room ID
   players: string;
   word: string;
   gameStarted: boolean;
