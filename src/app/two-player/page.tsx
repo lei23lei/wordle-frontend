@@ -91,26 +91,29 @@ export default function TwoPlayerPage() {
       setMyGuesses(gameState.myGuesses || []);
       setMyGuessStates(gameState.myGuessStates || []);
 
-      // Update opponent state (only show states, not actual words)
-      const myId = websocketService.socketId;
-      const opponentId = gameState.players?.find((p: string) => p !== myId);
-      if (
-        opponentId &&
-        gameState.playerGuessesCount &&
-        gameState.playerGuessStates
-      ) {
-        const opponentGuessCount =
-          gameState.playerGuessesCount[opponentId] || 0;
-        const opponentStates = gameState.playerGuessStates[opponentId] || [];
+      // Only update opponent state if game is not over (to avoid overriding final guesses)
+      if (!gameState.gameOver) {
+        // Update opponent state (only show states, not actual words)
+        const myId = websocketService.socketId;
+        const opponentId = gameState.players?.find((p: string) => p !== myId);
+        if (
+          opponentId &&
+          gameState.playerGuessesCount &&
+          gameState.playerGuessStates
+        ) {
+          const opponentGuessCount =
+            gameState.playerGuessesCount[opponentId] || 0;
+          const opponentStates = gameState.playerGuessStates[opponentId] || [];
 
-        console.log("Opponent guess count:", opponentGuessCount);
-        console.log("Opponent states:", opponentStates);
+          console.log("Opponent guess count:", opponentGuessCount);
+          console.log("Opponent states:", opponentStates);
 
-        // Create placeholder words for opponent (show only states)
-        const opponentGuessesPlaceholder: string[] =
-          Array(opponentGuessCount).fill("?????");
-        setOpponentGuesses(opponentGuessesPlaceholder);
-        setOpponentGuessStates(opponentStates);
+          // Create placeholder words for opponent (show only states)
+          const opponentGuessesPlaceholder: string[] =
+            Array(opponentGuessCount).fill("?????");
+          setOpponentGuesses(opponentGuessesPlaceholder);
+          setOpponentGuessStates(opponentStates);
+        }
       }
 
       // Update keyboard from my guesses
@@ -161,10 +164,36 @@ export default function TwoPlayerPage() {
 
       setDialogOpen(true);
 
-      // Update final guesses
+      // Update final guesses and states
       const myId = websocketService.socketId;
       if (myId && event.playerGuesses && event.playerGuesses[myId]) {
         setMyGuesses(event.playerGuesses[myId]);
+      }
+
+      // Update final guess states
+      if (myId && event.playerGuessStates && event.playerGuessStates[myId]) {
+        setMyGuessStates(event.playerGuessStates[myId]);
+      }
+
+      // Update opponent's final guess and states
+      const opponentId = Object.keys(event.playerGuesses || {}).find(
+        (playerId) => playerId !== myId
+      );
+      if (
+        opponentId &&
+        event.playerGuesses &&
+        event.playerGuesses[opponentId]
+      ) {
+        // Use actual opponent guesses when game is over
+        setOpponentGuesses(event.playerGuesses[opponentId]);
+      }
+
+      if (
+        opponentId &&
+        event.playerGuessStates &&
+        event.playerGuessStates[opponentId]
+      ) {
+        setOpponentGuessStates(event.playerGuessStates[opponentId]);
       }
 
       if (event.winner === myId) {
