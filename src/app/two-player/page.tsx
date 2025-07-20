@@ -115,7 +115,7 @@ export default function TwoPlayerPage() {
       }
     });
 
-    websocketService.onGameRestarted((gameState) => {
+    websocketService.onGameRestarted(() => {
       setGamePhase("playing");
       setGameOver(false);
       setWinner(null);
@@ -134,10 +134,6 @@ export default function TwoPlayerPage() {
       setGameOverReason(null);
       setShowDisconnectDialog(false); // Reset disconnect dialog
       setStatus("Game restarted!");
-    });
-
-    websocketService.onGuessSubmitted((event) => {
-      // This event is now handled by onGameStateUpdate
     });
 
     websocketService.onGameOver((event) => {
