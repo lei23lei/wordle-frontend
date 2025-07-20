@@ -10,10 +10,6 @@ export default function Background() {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    console.log(resolvedTheme);
-  }, [resolvedTheme]);
-
   if (!mounted) return null;
 
   const isDark = resolvedTheme === "dark";
