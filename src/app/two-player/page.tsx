@@ -335,7 +335,7 @@ export default function TwoPlayerPage() {
       setError("Please enter a room ID");
       return;
     }
-    websocketService.joinRoom(inputRoomId.trim().toUpperCase(), (res) => {
+    websocketService.joinRoom(inputRoomId.trim(), (res) => {
       if (res.success) {
         setRoomId(res.roomId!);
         setIsHost(false);
@@ -480,7 +480,7 @@ export default function TwoPlayerPage() {
                     value={inputRoomId}
                     onChange={(e) => setInputRoomId(e.target.value)}
                     maxLength={6}
-                    style={{ textTransform: "uppercase" }}
+                    style={{ textTransform: "none" }}
                   />
                   <CustomizedButton
                     onClick={handleJoinRoom}
