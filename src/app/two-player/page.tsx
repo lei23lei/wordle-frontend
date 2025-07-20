@@ -67,14 +67,12 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onPlayerLeft((event) => {
-      console.log("Player left event:", event);
       setPlayerCount(event.playerCount);
       setStatus(`Player left`);
       // Note: Backend will send gameOver event if game was in progress
     });
 
     websocketService.onGameStarted((gameState) => {
-      console.log("Game started event received:", gameState);
       setGamePhase("playing");
       setMyGuesses(gameState.myGuesses || []);
       setMyGuessStates(gameState.myGuessStates || []);
@@ -82,17 +80,9 @@ export default function TwoPlayerPage() {
       setOpponentGuessStates([]);
       setStatus("Game started!");
       setShowDisconnectDialog(false); // Reset disconnect dialog
-      console.log(
-        "Game phase set to playing, initial my guesses:",
-        gameState.myGuesses
-      );
     });
 
     websocketService.onGameStateUpdate((gameState) => {
-      console.log("🔄 Game state update received:", gameState);
-      console.log("My guesses:", gameState.myGuesses);
-      console.log("My guess states:", gameState.myGuessStates);
-
       // Update with authoritative server state (overwrites optimistic updates)
       setMyGuesses(gameState.myGuesses || []);
       setMyGuessStates(gameState.myGuessStates || []);
@@ -111,9 +101,6 @@ export default function TwoPlayerPage() {
             gameState.playerGuessesCount[opponentId] || 0;
           const opponentStates = gameState.playerGuessStates[opponentId] || [];
 
-          console.log("Opponent guess count:", opponentGuessCount);
-          console.log("Opponent states:", opponentStates);
-
           // Create placeholder words for opponent (show only states)
           const opponentGuessesPlaceholder: string[] =
             Array(opponentGuessCount).fill("?????");
@@ -129,7 +116,6 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onGameRestarted((gameState) => {
-      console.log("Game restarted:", gameState);
       setGamePhase("playing");
       setGameOver(false);
       setWinner(null);
@@ -151,12 +137,10 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onGuessSubmitted((event) => {
-      console.log("Guess submitted event received:", event);
       // This event is now handled by onGameStateUpdate
     });
 
     websocketService.onGameOver((event) => {
-      console.log("Game over event:", event);
       setGamePhase("finished");
       setGameOver(true);
       setWinner(event.winner);
@@ -214,7 +198,6 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onForceReturnHome((event) => {
-      console.log("Force return home:", event);
       showNotification(event.message || "Returning to home");
       // Auto-navigate to home after a short delay
       setTimeout(() => {
@@ -223,7 +206,6 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onError((event) => {
-      console.log("❌ WebSocket error received:", event);
       // Show game validation errors as notifications
       if (
         event.message.includes("Not in dictionary") ||
@@ -387,8 +369,6 @@ export default function TwoPlayerPage() {
           return;
         }
         const guessWord = currentGuess.join("");
-        console.log("Submitting guess:", guessWord);
-        console.log("WebSocket connected:", websocketService.connected);
 
         // Optimistically add the guess to display while waiting for server response
         const newMyGuesses = [...myGuesses, guessWord];
@@ -396,17 +376,6 @@ export default function TwoPlayerPage() {
 
         websocketService.submitGuess(guessWord);
         setCurrentGuess([]);
-
-        // Debug: Check if we get a response
-        setTimeout(() => {
-          console.log(
-            "5 seconds after guess - myGuesses length:",
-            myGuesses.length
-          );
-          if (myGuesses.length === 0) {
-            console.log("⚠️ No server response detected");
-          }
-        }, 5000);
       } else if (key === "BACKSPACE") {
         setCurrentGuess((prev) => prev.slice(0, -1));
       } else if (key.length === 1 && currentGuess.length < 5) {
