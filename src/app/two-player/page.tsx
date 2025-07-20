@@ -59,10 +59,6 @@ export default function TwoPlayerPage() {
     websocketService.onConnect(() => setConnected(true));
     websocketService.onDisconnect(() => {
       setConnected(false);
-      // Show disconnect dialog if user was in a game
-      if (gamePhase === "playing") {
-        setShowDisconnectDialog(true);
-      }
     });
 
     websocketService.onPlayerJoined((event) => {
@@ -93,7 +89,7 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onGameStateUpdate((gameState) => {
-      console.log("Game state update received:", gameState);
+      console.log("🔄 Game state update received:", gameState);
       console.log("My guesses:", gameState.myGuesses);
       console.log("My guess states:", gameState.myGuessStates);
 
@@ -227,7 +223,7 @@ export default function TwoPlayerPage() {
     });
 
     websocketService.onError((event) => {
-      console.log("WebSocket error received:", event);
+      console.log("❌ WebSocket error received:", event);
       // Show game validation errors as notifications
       if (
         event.message.includes("Not in dictionary") ||
@@ -254,7 +250,14 @@ export default function TwoPlayerPage() {
     });
 
     return () => websocketService.disconnect();
-  }, [gamePhase]); // Include gamePhase dependency for onDisconnect callback
+  }, []); // Empty dependency array to prevent re-registration
+
+  // Handle disconnect dialog separately to avoid re-registering WebSocket listeners
+  useEffect(() => {
+    if (!connected && gamePhase === "playing") {
+      setShowDisconnectDialog(true);
+    }
+  }, [connected, gamePhase]);
 
   // Handle physical keyboard input
   useEffect(() => {
@@ -385,6 +388,7 @@ export default function TwoPlayerPage() {
         }
         const guessWord = currentGuess.join("");
         console.log("Submitting guess:", guessWord);
+        console.log("WebSocket connected:", websocketService.connected);
 
         // Optimistically add the guess to display while waiting for server response
         const newMyGuesses = [...myGuesses, guessWord];
@@ -392,6 +396,17 @@ export default function TwoPlayerPage() {
 
         websocketService.submitGuess(guessWord);
         setCurrentGuess([]);
+
+        // Debug: Check if we get a response
+        setTimeout(() => {
+          console.log(
+            "5 seconds after guess - myGuesses length:",
+            myGuesses.length
+          );
+          if (myGuesses.length === 0) {
+            console.log("⚠️ No server response detected");
+          }
+        }, 5000);
       } else if (key === "BACKSPACE") {
         setCurrentGuess((prev) => prev.slice(0, -1));
       } else if (key.length === 1 && currentGuess.length < 5) {
