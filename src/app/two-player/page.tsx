@@ -421,7 +421,16 @@ export default function TwoPlayerPage() {
                   disabled={!connected}
                   className="w-full py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  {!connected ? "Connecting..." : "Create Room"}
+                  {!connected ? (
+                    <span className="inline-flex items-center gap-1">
+                      <span>Connecting</span>
+                      <span className="animate-[dots-1_2s_infinite]">.</span>
+                      <span className="animate-[dots-2_2s_infinite]">.</span>
+                      <span className="animate-[dots-3_2s_infinite]">.</span>
+                    </span>
+                  ) : (
+                    "Create Room"
+                  )}
                 </CustomizedButton>
 
                 <div className="relative">
@@ -527,9 +536,14 @@ export default function TwoPlayerPage() {
           )}
 
           {!connected && (
-            <div className="mt-2 sm:mt-3 p-1.5 sm:p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-              <div className="text-yellow-600 dark:text-yellow-400 text-xs sm:text-xs font-medium text-center">
-                Connecting to server...
+            <div className="mt-2 sm:mt-3 p-1.5  sm:p-2 bg-yellow-50/50 rounded-md dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+              <div className="text-yellow-700 dark:text-yellow-400 text-xs sm:text-xs font-medium text-center">
+                Waking up the server, just a moment
+                <span className="inline-block w-4  text-center">
+                  <span className="animate-[dots-1_2s_infinite]">.</span>
+                  <span className="animate-[dots-2_2s_infinite]">.</span>
+                  <span className="animate-[dots-3_2s_infinite]">.</span>
+                </span>
               </div>
             </div>
           )}
