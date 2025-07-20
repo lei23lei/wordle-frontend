@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { websocketService } from "@/services/websocket";
 import CustomizedButton from "@/components/customized-button";
 import Blanks from "@/components/blanks";
@@ -51,10 +51,19 @@ export default function TwoPlayerPage() {
   const [presentKeys, setPresentKeys] = useState<string[]>([]);
   const [absentKeys, setAbsentKeys] = useState<string[]>([]);
 
+  // Disconnect dialog state
+  const [showDisconnectDialog, setShowDisconnectDialog] = useState(false);
+
   useEffect(() => {
     websocketService.connect();
     websocketService.onConnect(() => setConnected(true));
-    websocketService.onDisconnect(() => setConnected(false));
+    websocketService.onDisconnect(() => {
+      setConnected(false);
+      // Show disconnect dialog if user was in a game
+      if (gamePhase === "playing") {
+        setShowDisconnectDialog(true);
+      }
+    });
 
     websocketService.onPlayerJoined((event) => {
       setPlayerCount(event.playerCount);
@@ -76,6 +85,7 @@ export default function TwoPlayerPage() {
       setOpponentGuesses([]);
       setOpponentGuessStates([]);
       setStatus("Game started!");
+      setShowDisconnectDialog(false); // Reset disconnect dialog
       console.log(
         "Game phase set to playing, initial my guesses:",
         gameState.myGuesses
@@ -140,6 +150,7 @@ export default function TwoPlayerPage() {
       setNotificationMessage("");
       setDialogOpen(false);
       setGameOverReason(null);
+      setShowDisconnectDialog(false); // Reset disconnect dialog
       setStatus("Game restarted!");
     });
 
@@ -243,13 +254,13 @@ export default function TwoPlayerPage() {
     });
 
     return () => websocketService.disconnect();
-  }, []); // Empty dependency array to prevent re-registration
+  }, [gamePhase]); // Include gamePhase dependency for onDisconnect callback
 
   // Handle physical keyboard input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't handle keyboard events when dialog is open or not in playing phase
-      if (dialogOpen || gamePhase !== "playing") return;
+      // Don't handle keyboard events when any dialog is open or not in playing phase
+      if (dialogOpen || showDisconnectDialog || gamePhase !== "playing") return;
 
       if (e.key === "Enter") {
         e.preventDefault();
@@ -268,15 +279,15 @@ export default function TwoPlayerPage() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [gamePhase, dialogOpen, gameOver, currentGuess]);
+  }, [gamePhase, dialogOpen, gameOver, currentGuess, showDisconnectDialog]);
 
-  const showNotification = (message: string) => {
+  const showNotification = useCallback((message: string) => {
     setNotificationMessage(message);
     // Auto-clear notification after 2 seconds
     setTimeout(() => {
       setNotificationMessage("");
     }, 2000);
-  };
+  }, []);
 
   const updateKeyboardFromGuesses = (
     guesses: string[],
@@ -363,29 +374,32 @@ export default function TwoPlayerPage() {
     }
   };
 
-  const handleKeyPress = (key: string) => {
-    if (gameOver || gamePhase !== "playing") return;
+  const handleKeyPress = useCallback(
+    (key: string) => {
+      if (gameOver || gamePhase !== "playing") return;
 
-    if (key === "ENTER") {
-      if (currentGuess.length !== 5) {
-        showNotification("Too Short");
-        return;
+      if (key === "ENTER") {
+        if (currentGuess.length !== 5) {
+          showNotification("Too Short");
+          return;
+        }
+        const guessWord = currentGuess.join("");
+        console.log("Submitting guess:", guessWord);
+
+        // Optimistically add the guess to display while waiting for server response
+        const newMyGuesses = [...myGuesses, guessWord];
+        setMyGuesses(newMyGuesses);
+
+        websocketService.submitGuess(guessWord);
+        setCurrentGuess([]);
+      } else if (key === "BACKSPACE") {
+        setCurrentGuess((prev) => prev.slice(0, -1));
+      } else if (key.length === 1 && currentGuess.length < 5) {
+        setCurrentGuess((prev) => [...prev, key.toUpperCase()]);
       }
-      const guessWord = currentGuess.join("");
-      console.log("Submitting guess:", guessWord);
-
-      // Optimistically add the guess to display while waiting for server response
-      const newMyGuesses = [...myGuesses, guessWord];
-      setMyGuesses(newMyGuesses);
-
-      websocketService.submitGuess(guessWord);
-      setCurrentGuess([]);
-    } else if (key === "BACKSPACE") {
-      setCurrentGuess((prev) => prev.slice(0, -1));
-    } else if (key.length === 1 && currentGuess.length < 5) {
-      setCurrentGuess((prev) => [...prev, key.toUpperCase()]);
-    }
-  };
+    },
+    [gameOver, gamePhase, currentGuess, myGuesses, showNotification]
+  );
 
   const getDialogContent = () => {
     const myId = websocketService.socketId;
@@ -686,6 +700,38 @@ export default function TwoPlayerPage() {
                     onClick={() => {
                       websocketService.leaveRoom();
                       websocketService.disconnect();
+                    }}
+                  >
+                    <CustomizedButton>Return Home</CustomizedButton>
+                  </Link>
+                </div>
+              </div>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+
+        {/* Disconnect Dialog */}
+        <Dialog open={showDisconnectDialog} onOpenChange={() => {}}>
+          <DialogContent
+            className="w-[90%] sm:max-w-md focus:outline-none"
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
+            <DialogHeader className="flex flex-col items-center justify-center gap-2">
+              <DialogTitle className="text-2xl font-bold text-orange-600">
+                🔌 Connection Lost
+              </DialogTitle>
+              <div className="text-center space-y-4 flex flex-col">
+                <p className="text-sm text-gray-600 dark:text-gray-200">
+                  You&apos;ve been disconnected from the game. Your opponent has
+                  been notified and the game may have ended.
+                </p>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href="/"
+                    onClick={() => {
+                      websocketService.leaveRoom();
+                      websocketService.disconnect();
+                      setShowDisconnectDialog(false);
                     }}
                   >
                     <CustomizedButton>Return Home</CustomizedButton>
