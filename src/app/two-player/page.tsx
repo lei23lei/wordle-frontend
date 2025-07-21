@@ -230,6 +230,13 @@ export default function TwoPlayerPage() {
     return () => websocketService.disconnect();
   }, []); // Empty dependency array to prevent re-registration
 
+  // Scroll to top smoothly after entering the game
+  useEffect(() => {
+    if (gamePhase === "playing") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [gamePhase]);
+
   // Handle disconnect dialog separately to avoid re-registering WebSocket listeners
   useEffect(() => {
     if (!connected && gamePhase === "playing") {
