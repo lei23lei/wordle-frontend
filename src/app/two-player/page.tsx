@@ -632,7 +632,7 @@ export default function TwoPlayerPage() {
           </div>
 
           {/* Opponent Board */}
-          <div className="flex flex-col items-center scale-[0.4] -right-20 md:scale-100 absolute md:static">
+          <div className="flex flex-col items-center scale-[0.4] -right-12 md:scale-100 absolute md:static">
             <h2 className="text-4xl md:text-lg font-semibold mb-2">Opponent</h2>
             <Blanks
               guesses={(opponentGuesses || []).map((g) =>
