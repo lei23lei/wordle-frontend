@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="">
-      <body className="bg-background  max-h-screen  ">
+      <body className="bg-background relative  min-h-screen  ">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -30,7 +30,9 @@ export default function RootLayout({
           <StoreProvider>
             <Nav />
             {children}
-            <Footer />
+            <div className="absolute bottom-1 w-full">
+              <Footer />
+            </div>
             <Toaster />
           </StoreProvider>
         </ThemeProvider>
