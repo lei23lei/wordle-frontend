@@ -432,7 +432,7 @@ export default function TwoPlayerPage() {
 
   if (gamePhase === "lobby") {
     return (
-      <div className="flex flex-col items-center justify-center px-4 py-4 sm:py-6 h-[calc(100vh-150px)]">
+      <div className="flex flex-col items-center justify-center px-4 py-4 sm:py-6 h-[calc(100vh-100px)]">
         <div className="w-full max-w-xs sm:max-w-sm md:max-w-sm  bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-5">
           <div className="text-center mb-3 sm:mb-4 md:mb-5">
             <h1 className="text-lg sm:text-xl md:text-xl  font-bold text-gray-800 dark:text-white mb-1">
@@ -597,7 +597,7 @@ export default function TwoPlayerPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-3 md:pt-0">
+    <div className="container mx-auto px-4 pt-3 md:pt-0 h-[calc(100vh-100px)] flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-start  gap-4">
         {/* Header */}
         <div className="text-center">

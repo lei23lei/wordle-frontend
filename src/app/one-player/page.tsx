@@ -321,7 +321,7 @@ export default function OnePlayer() {
   const dialogContent = getDialogContent();
 
   return (
-    <div className="container mx-auto pt-3 md:pt-0">
+    <div className="container mx-auto h-[calc(100vh-100px)] flex flex-col items-center justify-center">
       {/* <div className="text-center text-2xl font-bold">{targetWord}</div> */}
       <div className="flex relative flex-col items-center justify-start  gap-6 py-8">
         <Blanks
