@@ -289,6 +289,11 @@
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
 }
+input,
+textarea,
+select {
+  font-size: 16px;
+}
 
 /* 3D Keyboard Styles */
 .key-3d {
