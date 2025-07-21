@@ -40,6 +40,13 @@ export default function OnePlayer() {
     startNewGame();
   }, []);
 
+  // Scroll to top smoothly after entering the game
+  useEffect(() => {
+    if (gameState === "playing") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [gameState]);
+
   const startNewGame = () => {
     const randomWord =
       VALID_WORDS[Math.floor(Math.random() * VALID_WORDS.length)];
