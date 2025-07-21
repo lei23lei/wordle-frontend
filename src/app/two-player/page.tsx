@@ -442,7 +442,7 @@ export default function TwoPlayerPage() {
                 <CustomizedButton
                   onClick={handleCreateRoom}
                   disabled={!connected}
-                  className="w-full py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="w-full py-2 sm:py-2.5 text-base sm:text-base md:text-base lg:text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   {!connected ? (
                     <span className="inline-flex items-center gap-1">
@@ -466,7 +466,7 @@ export default function TwoPlayerPage() {
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
                   <input
-                    className="w-full px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-sm sm:text-base md:text-base lg:text-base tracking-wider"
+                    className="w-full px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-base sm:text-base md:text-base lg:text-base tracking-wider"
                     placeholder="ROOM ID"
                     value={inputRoomId}
                     onChange={(e) => setInputRoomId(e.target.value)}
@@ -476,7 +476,7 @@ export default function TwoPlayerPage() {
                   <CustomizedButton
                     onClick={handleJoinRoom}
                     disabled={!connected || !inputRoomId}
-                    className="w-full sm:w-32 px-3 sm:px-4 text-center py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
+                    className="w-full sm:w-32 px-3 sm:px-4 text-center py-2 sm:py-2.5 text-base sm:text-base md:text-base lg:text-base bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
                   >
                     Join
                   </CustomizedButton>
@@ -537,7 +537,7 @@ export default function TwoPlayerPage() {
                   {isHost && playerCount === 2 && (
                     <CustomizedButton
                       onClick={handleStartGame}
-                      className="w-full py-2 sm:py-2.5 text-sm sm:text-sm md:text-base lg:text-base font-semibold bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="w-full py-2 sm:py-2.5 text-base sm:text-base md:text-base lg:text-base font-semibold bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                     >
                       Start Game
                     </CustomizedButton>
@@ -578,7 +578,7 @@ export default function TwoPlayerPage() {
                 websocketService.disconnect();
               }}
             >
-              <CustomizedButton className="w-full py-2 sm:py-2.5 text-xs sm:text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-300  bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
+              <CustomizedButton className="w-full py-2 sm:py-2.5 text-base sm:text-base md:text-base lg:text-base text-gray-600 dark:text-gray-300  bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
                 ← Return Home
               </CustomizedButton>
             </Link>
