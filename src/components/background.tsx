@@ -34,6 +34,7 @@ export default function Background() {
         style={{ minHeight: "120px", maxHeight: "220px" }}
         preserveAspectRatio="none"
       >
+        {/* Background grass layer */}
         <path
           d="M0,80 Q360,180 720,120 T1440,120 V220 H0 Z"
           fill={
@@ -41,15 +42,254 @@ export default function Background() {
           }
           className="transition-all duration-2000 ease-in-out"
         />
+
+        {/* Middle grass layer with slight variation */}
+        <path
+          d="M0,90 Q300,170 600,130 Q900,90 1200,140 Q1320,160 1440,130 V220 H0 Z"
+          fill={
+            isDark
+              ? "url(#grass-mid-gradient-night)"
+              : "url(#grass-mid-gradient-day)"
+          }
+          className="transition-all duration-2000 ease-in-out"
+          opacity="0.8"
+        />
+
+        {/* Front grass layer */}
+        <path
+          d="M0,110 Q240,160 480,140 Q720,120 960,150 Q1200,180 1440,140 V220 H0 Z"
+          fill={
+            isDark
+              ? "url(#grass-front-gradient-night)"
+              : "url(#grass-front-gradient-day)"
+          }
+          className="transition-all duration-2000 ease-in-out"
+          opacity="0.9"
+        />
+
+        {/* Individual grass blades for texture */}
+        {[...Array(40)].map((_, i) => {
+          const x = i * 36 + Math.sin(i) * 20;
+          const height = 15 + Math.sin(i * 0.7) * 8;
+          const curve = Math.sin(i * 0.3) * 3;
+          return (
+            <path
+              key={`blade-${i}`}
+              d={`M${x},220 Q${x + curve},${220 - height / 2} ${
+                x + curve * 2
+              },${220 - height}`}
+              stroke={isDark ? "#15803d" : "#16a34a"}
+              strokeWidth="1.5"
+              fill="none"
+              opacity="0.6"
+              className="transition-all duration-2000 ease-in-out"
+            />
+          );
+        })}
+
+        {/* Additional grass texture */}
+        {[...Array(60)].map((_, i) => {
+          const x = i * 24 + 12 + Math.cos(i) * 15;
+          const height = 8 + Math.cos(i * 0.9) * 5;
+          const sway = Math.sin(i * 0.5) * 2;
+          return (
+            <path
+              key={`texture-${i}`}
+              d={`M${x},220 Q${x + sway},${220 - height / 2} ${
+                x + sway * 1.5
+              },${220 - height}`}
+              stroke={isDark ? "#166534" : "#22c55e"}
+              strokeWidth="1"
+              fill="none"
+              opacity="0.4"
+              className="transition-all duration-2000 ease-in-out"
+            />
+          );
+        })}
+
+        {/* Small flowers scattered in the grass */}
+        {[...Array(12)].map((_, i) => {
+          const x = 120 + i * 110 + Math.sin(i * 2) * 40;
+          const y = 180 + Math.cos(i * 1.5) * 15;
+          const flowerType = i % 3;
+
+          if (flowerType === 0) {
+            // Daisy-like flower
+            return (
+              <g
+                key={`flower-${i}`}
+                className="transition-all duration-2000 ease-in-out"
+              >
+                <circle cx={x} cy={y} r="3" fill="#fef08a" opacity="0.8" />
+                <circle
+                  cx={x - 2}
+                  cy={y - 1}
+                  r="2"
+                  fill="white"
+                  opacity="0.9"
+                />
+                <circle
+                  cx={x + 2}
+                  cy={y - 1}
+                  r="2"
+                  fill="white"
+                  opacity="0.9"
+                />
+                <circle
+                  cx={x - 1}
+                  cy={y + 2}
+                  r="2"
+                  fill="white"
+                  opacity="0.9"
+                />
+                <circle
+                  cx={x + 1}
+                  cy={y + 2}
+                  r="2"
+                  fill="white"
+                  opacity="0.9"
+                />
+                <circle cx={x} cy={y} r="1.5" fill="#fbbf24" />
+              </g>
+            );
+          } else if (flowerType === 1) {
+            // Small wildflower
+            return (
+              <g
+                key={`flower-${i}`}
+                className="transition-all duration-2000 ease-in-out"
+              >
+                <circle cx={x} cy={y} r="2" fill="#ec4899" opacity="0.8" />
+                <circle
+                  cx={x - 1.5}
+                  cy={y - 0.5}
+                  r="1.5"
+                  fill="#f472b6"
+                  opacity="0.7"
+                />
+                <circle
+                  cx={x + 1.5}
+                  cy={y - 0.5}
+                  r="1.5"
+                  fill="#f472b6"
+                  opacity="0.7"
+                />
+                <circle
+                  cx={x}
+                  cy={y + 1.5}
+                  r="1.5"
+                  fill="#f472b6"
+                  opacity="0.7"
+                />
+                <circle cx={x} cy={y} r="0.8" fill="#fbbf24" />
+              </g>
+            );
+          } else {
+            // Tiny blue flower
+            return (
+              <g
+                key={`flower-${i}`}
+                className="transition-all duration-2000 ease-in-out"
+              >
+                <circle cx={x} cy={y} r="1.5" fill="#3b82f6" opacity="0.7" />
+                <circle
+                  cx={x - 1}
+                  cy={y - 0.5}
+                  r="1"
+                  fill="#60a5fa"
+                  opacity="0.8"
+                />
+                <circle
+                  cx={x + 1}
+                  cy={y - 0.5}
+                  r="1"
+                  fill="#60a5fa"
+                  opacity="0.8"
+                />
+                <circle cx={x} cy={y + 1} r="1" fill="#60a5fa" opacity="0.8" />
+                <circle cx={x} cy={y} r="0.5" fill="white" />
+              </g>
+            );
+          }
+        })}
+
+        {/* Small stones/pebbles for added realism */}
+        {[...Array(8)].map((_, i) => {
+          const x = 80 + i * 170 + Math.sin(i * 3) * 30;
+          const y = 200 + Math.cos(i * 2) * 8;
+          const size = 2 + Math.sin(i) * 1.5;
+          return (
+            <ellipse
+              key={`stone-${i}`}
+              cx={x}
+              cy={y}
+              rx={size}
+              ry={size * 0.7}
+              fill={isDark ? "#374151" : "#6b7280"}
+              opacity="0.6"
+              className="transition-all duration-2000 ease-in-out"
+            />
+          );
+        })}
+
         <defs>
+          {/* Day gradients */}
           <linearGradient id="grass-gradient-day" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#22c55e" />
-            <stop offset="50%" stopColor="#16a34a" />
+            <stop offset="30%" stopColor="#16a34a" />
+            <stop offset="70%" stopColor="#15803d" />
+            <stop offset="100%" stopColor="#166534" />
+          </linearGradient>
+          <linearGradient
+            id="grass-mid-gradient-day"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="0%" stopColor="#16a34a" />
+            <stop offset="50%" stopColor="#15803d" />
+            <stop offset="100%" stopColor="#14532d" />
+          </linearGradient>
+          <linearGradient
+            id="grass-front-gradient-day"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="0%" stopColor="#22c55e" />
+            <stop offset="40%" stopColor="#16a34a" />
             <stop offset="100%" stopColor="#15803d" />
           </linearGradient>
+
+          {/* Night gradients */}
           <linearGradient id="grass-gradient-night" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#166534" />
-            <stop offset="50%" stopColor="#15803d" />
+            <stop offset="30%" stopColor="#15803d" />
+            <stop offset="70%" stopColor="#14532d" />
+            <stop offset="100%" stopColor="#052e16" />
+          </linearGradient>
+          <linearGradient
+            id="grass-mid-gradient-night"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="0%" stopColor="#15803d" />
+            <stop offset="50%" stopColor="#14532d" />
+            <stop offset="100%" stopColor="#052e16" />
+          </linearGradient>
+          <linearGradient
+            id="grass-front-gradient-night"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="0%" stopColor="#166534" />
+            <stop offset="40%" stopColor="#15803d" />
             <stop offset="100%" stopColor="#14532d" />
           </linearGradient>
         </defs>
