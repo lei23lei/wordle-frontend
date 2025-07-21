@@ -597,7 +597,7 @@ export default function TwoPlayerPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-3 md:pt-0 h-[calc(100vh-100px)] flex flex-col items-center justify-center">
+    <div className="container mx-auto px-4  h-[calc(100vh-100px)] md:pt-2 md:h-auto flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-start  gap-4">
         {/* Header */}
         <div className="text-center">
