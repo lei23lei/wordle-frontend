@@ -476,6 +476,7 @@ export default function TwoPlayerPage() {
                     className="w-full px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg border-2 border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 font-mono text-center text-base sm:text-base md:text-base lg:text-base tracking-wider"
                     placeholder="ROOM ID"
                     value={inputRoomId}
+                    inputMode="numeric"
                     onChange={(e) => setInputRoomId(e.target.value)}
                     maxLength={6}
                     style={{ textTransform: "none" }}
