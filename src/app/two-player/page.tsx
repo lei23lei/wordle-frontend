@@ -338,7 +338,7 @@ export default function TwoPlayerPage() {
       if (res.success) {
         setRoomId(res.roomId!);
         setIsHost(false);
-        setStatus("Joined room. Waiting for host to start the game...");
+        setStatus("Waiting for host to start the game...");
         setPlayerCount(2);
       } else {
         setError(res.error || "Failed to join room");
@@ -539,7 +539,24 @@ export default function TwoPlayerPage() {
                   </div>
 
                   <div className="text-green-600 dark:text-green-400 font-medium text-xs sm:text-xs md:text-sm">
-                    {status}
+                    {status && status.includes("...") ? (
+                      <span>
+                        {status.replace("...", "")}
+                        <span className="inline-block w-4 text-center">
+                          <span className="animate-[dots-1_2s_infinite]">
+                            .
+                          </span>
+                          <span className="animate-[dots-2_2s_infinite]">
+                            .
+                          </span>
+                          <span className="animate-[dots-3_2s_infinite]">
+                            .
+                          </span>
+                        </span>
+                      </span>
+                    ) : (
+                      status
+                    )}
                   </div>
 
                   {isHost && playerCount === 2 && (
