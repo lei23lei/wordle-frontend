@@ -1,6 +1,7 @@
 "use client";
 import CustomizedButton from "@/components/customized-button";
 import Logo from "@/components/logo";
+import VersionDialog from "@/components/notification";
 import Link from "next/link";
 
 export default function Home() {
@@ -20,6 +21,9 @@ export default function Home() {
           <CustomizedButton className="w-full">Two Player</CustomizedButton>
         </Link>
       </div>
+
+      {/* Version Dialog */}
+      <VersionDialog version="1.1" />
     </div>
   );
 }
