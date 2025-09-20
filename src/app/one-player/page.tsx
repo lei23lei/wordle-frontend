@@ -363,7 +363,7 @@ export default function OnePlayer() {
               </DialogTitle>
               {dialogType === "won" && (
                 <div className="text-center space-y-4 flex flex-col ">
-                  <p className="text-sm text-gray-600 dark:text-gray-200">
+                  <p className="text-sm text-secondary">
                     {dialogContent.description}
                   </p>
                   <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg font-mono text-sm whitespace-pre-line">
@@ -376,7 +376,7 @@ export default function OnePlayer() {
               )}
               {dialogType === "lost" && (
                 <div className="text-center space-y-2">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-foreground">
                     {dialogContent.description}
                   </p>
                   <CustomizedButton onClick={startNewGame} className="mt-4">
