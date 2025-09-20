@@ -112,7 +112,7 @@ export default function VersionDialog({ version }: VersionDialogProps) {
               onClick={handleClose}
               className="mt-4 w-full sm:w-auto"
             >
-              Let's Play!
+              Let&apos;s Play!
             </CustomizedButton>
           </div>
         </div>
