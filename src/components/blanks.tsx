@@ -19,15 +19,15 @@ export function Row({ letters, states, shake }: RowProps) {
 
     switch (state) {
       case "correct":
-        return `${baseClasses} bg-keyBoardCorrect text-white border-keyBoardCorrect`;
+        return `${baseClasses} !bg-keyBoardCorrect liquid-glass-light text-white border-keyBoardCorrect`;
       case "present":
-        return `${baseClasses} bg-keyBoardPresent text-white border-keyBoardPresent`;
+        return `${baseClasses} !bg-keyBoardPresent liquid-glass-light text-white border-keyBoardPresent`;
       case "absent":
-        return `${baseClasses} bg-keyBoardAbsent text-white border-keyBoardAbsent`;
+        return `${baseClasses}  liquid-glass text-white `;
       case "filled":
-        return `${baseClasses} bg-background text-foreground border-gray-400 scale-105`;
+        return `${baseClasses}  liquid-glass text-foreground border-gray-400 scale-105`;
       default: // empty
-        return `${baseClasses} bg-background text-foreground border-border`;
+        return `${baseClasses} liquid-glass-heavy text-foreground border-border`;
     }
   };
 

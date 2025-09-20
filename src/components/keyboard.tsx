@@ -17,21 +17,21 @@ export default function Keyboard({
 
   const getKeyClassName = (key: string) => {
     const baseClasses =
-      "min-w-[32px] sm:min-w-[40px] h-14 sm:h-12 mx-[3px] sm:m-1 rounded font-bold text-xs sm:text-sm uppercase cursor-pointer select-none flex items-center justify-center touch-manipulation key-3d relative z-10";
+      "min-w-[32px] sm:min-w-[40px] !rounded-lg   h-12 sm:h-12 mx-[3px] sm:m-1 rounded font-bold text-xs sm:text-sm uppercase cursor-pointer select-none flex items-center justify-center touch-manipulation key-3d relative z-10";
 
     if (correctKeys.includes(key)) {
-      return `${baseClasses} bg-keyBoardCorrect text-white shadow-lg`;
+      return `${baseClasses} !bg-green-500 !border-green-300  !border-2 liquid-glass text-green-200 !shadow-sm`;
     }
 
     if (presentKeys.includes(key)) {
-      return `${baseClasses} bg-keyBoardPresent text-white shadow-lg`;
+      return `${baseClasses} !bg-yellow-500 !border-yellow-300  !border-2 liquid-glass text-yellow-200 !shadow-sm`;
     }
 
     if (absentKeys.includes(key)) {
-      return `${baseClasses} bg-keyBoardAbsent text-white shadow-lg`;
+      return `${baseClasses}  liquid-glass text-white shadow-lg`;
     }
 
-    return `${baseClasses} bg-keyBoardBackground text-keyBoardText hover:bg-gray-100 dark:hover:bg-gray-600 active:bg-gray-500`;
+    return `${baseClasses} liquid-glass-light  text-keyBoardText  active:bg-gray-500`;
   };
 
   return (
@@ -67,7 +67,7 @@ export default function Keyboard({
         <button
           className={
             getKeyClassName("ENTER") +
-            " min-w-[46px] sm:min-w-[56px] px-2 sm:px-4"
+            " min-w-[46px] sm:min-w-[56px]  px-2 sm:px-4"
           }
           onClick={() => onKeyPress("ENTER")}
         >
