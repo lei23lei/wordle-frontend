@@ -4,13 +4,15 @@ export default function SmallLogo() {
     { char: "O", color: "bg-yellow-400 text-black" },
     {
       char: "R",
-      color: "bg-gray-300 text-black dark:bg-gray-700 dark:text-white",
+      color:
+        "bg-gray-300  liquid-glass !rounded-md text-black dark:bg-gray-700 dark:text-white",
     },
     { char: "D", color: "bg-green-600 text-white" },
     { char: "L", color: "bg-yellow-400 text-black" },
     {
       char: "E",
-      color: "bg-gray-300 text-black dark:bg-gray-700 dark:text-white",
+      color:
+        "bg-gray-300 liquid-glass !rounded-md text-black dark:bg-gray-700 dark:text-white",
     },
   ];
 
