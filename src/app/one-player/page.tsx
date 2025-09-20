@@ -29,7 +29,7 @@ export default function OnePlayer() {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogType, setDialogType] = useState<DialogType>(null);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
-  const confettiRef = useRef<any>(null);
+  const confettiRef = useRef<{ fire: (options?: object) => void } | null>(null);
 
   // Keyboard state tracking
   const [correctKeys, setCorrectKeys] = useState<string[]>([]);
@@ -51,7 +51,6 @@ export default function OnePlayer() {
   const startNewGame = () => {
     const randomWord =
       VALID_WORDS[Math.floor(Math.random() * VALID_WORDS.length)];
-    console.log(randomWord);
     setTargetWord(randomWord);
     setCurrentGuess([]);
     setGuesses([]);
@@ -66,7 +65,7 @@ export default function OnePlayer() {
     setNotificationMessage("");
   };
 
-  const showDialog = (type: DialogType) => {
+  const showDialog = useCallback((type: DialogType) => {
     setDialogType(type);
     setDialogOpen(true);
 
@@ -76,15 +75,15 @@ export default function OnePlayer() {
         setDialogOpen(false);
       }, 1000);
     }
-  };
+  }, []);
 
-  const showNotification = (message: string) => {
+  const showNotification = useCallback((message: string) => {
     setNotificationMessage(message);
     // Auto-clear notification after 2 seconds
     setTimeout(() => {
       setNotificationMessage("");
     }, 2000);
-  };
+  }, []);
 
   // Word validation using Free Dictionary API with local fallback
   const isValidWord = async (word: string[]): Promise<boolean> => {
@@ -108,37 +107,38 @@ export default function OnePlayer() {
     }
   };
 
-  const evaluateGuess = (
-    guess: string[]
-  ): ("correct" | "present" | "absent")[] => {
-    const result: ("correct" | "present" | "absent")[] = [];
-    const targetArray = targetWord.split("");
-    const guessArray = [...guess];
+  const evaluateGuess = useCallback(
+    (guess: string[]): ("correct" | "present" | "absent")[] => {
+      const result: ("correct" | "present" | "absent")[] = [];
+      const targetArray = targetWord.split("");
+      const guessArray = [...guess];
 
-    // First pass: mark correct letters
-    for (let i = 0; i < 5; i++) {
-      if (guessArray[i] === targetArray[i]) {
-        result[i] = "correct";
-        targetArray[i] = null as unknown as string; // Mark as used
-        guessArray[i] = null as unknown as string; // Mark as used
-      }
-    }
-
-    // Second pass: mark present letters
-    for (let i = 0; i < 5; i++) {
-      if (guessArray[i] !== null) {
-        const targetIndex = targetArray.indexOf(guessArray[i]);
-        if (targetIndex !== -1) {
-          result[i] = "present";
-          targetArray[targetIndex] = null as unknown as string; // Mark as used
-        } else {
-          result[i] = "absent";
+      // First pass: mark correct letters
+      for (let i = 0; i < 5; i++) {
+        if (guessArray[i] === targetArray[i]) {
+          result[i] = "correct";
+          targetArray[i] = null as unknown as string; // Mark as used
+          guessArray[i] = null as unknown as string; // Mark as used
         }
       }
-    }
 
-    return result;
-  };
+      // Second pass: mark present letters
+      for (let i = 0; i < 5; i++) {
+        if (guessArray[i] !== null) {
+          const targetIndex = targetArray.indexOf(guessArray[i]);
+          if (targetIndex !== -1) {
+            result[i] = "present";
+            targetArray[targetIndex] = null as unknown as string; // Mark as used
+          } else {
+            result[i] = "absent";
+          }
+        }
+      }
+
+      return result;
+    },
+    [targetWord]
+  );
 
   const updateKeyboardState = useCallback(
     (guess: string[], evaluation: ("correct" | "present" | "absent")[]) => {
@@ -252,10 +252,11 @@ export default function OnePlayer() {
     currentGuess,
     guesses,
     guessStates,
-    targetWord,
+
     showNotification,
     showDialog,
     updateKeyboardState,
+    evaluateGuess,
   ]);
 
   const handleKeyPress = useCallback(

@@ -41,7 +41,7 @@ export default function TwoPlayerPage() {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [targetWord, setTargetWord] = useState<string>("");
-  const confettiRef = useRef<any>(null);
+  const confettiRef = useRef<{ fire: (options?: object) => void } | null>(null);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [gameOverReason, setGameOverReason] = useState<string | null>(null);
@@ -53,6 +53,40 @@ export default function TwoPlayerPage() {
 
   // Disconnect dialog state
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false);
+
+  const showNotification = useCallback((message: string) => {
+    setNotificationMessage(message);
+    // Auto-clear notification after 2 seconds
+    setTimeout(() => {
+      setNotificationMessage("");
+    }, 2000);
+  }, []);
+
+  const handleKeyPress = useCallback(
+    (key: string) => {
+      if (gameOver || gamePhase !== "playing") return;
+
+      if (key === "ENTER") {
+        if (currentGuess.length !== 5) {
+          showNotification("Too Short");
+          return;
+        }
+        const guessWord = currentGuess.join("");
+
+        // Optimistically add the guess to display while waiting for server response
+        const newMyGuesses = [...myGuesses, guessWord];
+        setMyGuesses(newMyGuesses);
+
+        websocketService.submitGuess(guessWord);
+        setCurrentGuess([]);
+      } else if (key === "BACKSPACE") {
+        setCurrentGuess((prev) => prev.slice(0, -1));
+      } else if (key.length === 1 && currentGuess.length < 5) {
+        setCurrentGuess((prev) => [...prev, key.toUpperCase()]);
+      }
+    },
+    [gameOver, gamePhase, currentGuess, myGuesses, showNotification]
+  );
 
   useEffect(() => {
     websocketService.connect();
@@ -262,7 +296,7 @@ export default function TwoPlayerPage() {
     });
 
     return () => websocketService.disconnect();
-  }, []); // Empty dependency array to prevent re-registration
+  }, [showNotification]); // Include showNotification dependency
 
   // Scroll to top smoothly after entering the game
   useEffect(() => {
@@ -301,15 +335,14 @@ export default function TwoPlayerPage() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [gamePhase, dialogOpen, gameOver, currentGuess, showDisconnectDialog]);
-
-  const showNotification = useCallback((message: string) => {
-    setNotificationMessage(message);
-    // Auto-clear notification after 2 seconds
-    setTimeout(() => {
-      setNotificationMessage("");
-    }, 2000);
-  }, []);
+  }, [
+    gamePhase,
+    dialogOpen,
+    gameOver,
+    currentGuess,
+    showDisconnectDialog,
+    handleKeyPress,
+  ]);
 
   const updateKeyboardFromGuesses = (
     guesses: string[],
@@ -395,32 +428,6 @@ export default function TwoPlayerPage() {
       setTimeout(() => setCopied(false), 1200);
     }
   };
-
-  const handleKeyPress = useCallback(
-    (key: string) => {
-      if (gameOver || gamePhase !== "playing") return;
-
-      if (key === "ENTER") {
-        if (currentGuess.length !== 5) {
-          showNotification("Too Short");
-          return;
-        }
-        const guessWord = currentGuess.join("");
-
-        // Optimistically add the guess to display while waiting for server response
-        const newMyGuesses = [...myGuesses, guessWord];
-        setMyGuesses(newMyGuesses);
-
-        websocketService.submitGuess(guessWord);
-        setCurrentGuess([]);
-      } else if (key === "BACKSPACE") {
-        setCurrentGuess((prev) => prev.slice(0, -1));
-      } else if (key.length === 1 && currentGuess.length < 5) {
-        setCurrentGuess((prev) => [...prev, key.toUpperCase()]);
-      }
-    },
-    [gameOver, gamePhase, currentGuess, myGuesses, showNotification]
-  );
 
   const getDialogContent = () => {
     const myId = websocketService.socketId;
