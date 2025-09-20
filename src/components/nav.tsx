@@ -1,16 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Sun, MoonStar } from "lucide-react";
 import { useEffect, useState } from "react";
 import SmallLogo from "./small-logo";
+import DarkmodeSwitch from "./darkmode-switch";
 
 export default function Nav() {
   const { theme, setTheme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
@@ -30,22 +28,17 @@ export default function Nav() {
 
   // Handle theme toggle with better system theme support
   const handleThemeToggle = () => {
+    console.log("handleThemeToggle called!", { theme, systemTheme });
     // Hide tooltip when user clicks the theme toggle
     setShowTooltip(false);
 
-    setIsAnimating(true);
-    setTimeout(() => {
-      if (theme === "system") {
-        // If currently on system, switch to the opposite of system preference
-        setTheme(systemTheme === "dark" ? "light" : "dark");
-      } else {
-        // Toggle between light and dark
-        setTheme(theme === "dark" ? "light" : "dark");
-      }
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 300);
-    }, 200);
+    if (theme === "system") {
+      // If currently on system, switch to the opposite of system preference
+      setTheme(systemTheme === "dark" ? "light" : "dark");
+    } else {
+      // Toggle between light and dark
+      setTheme(theme === "dark" ? "light" : "dark");
+    }
   };
 
   if (!mounted) return null;
@@ -65,26 +58,10 @@ export default function Nav() {
 
         <div className="flex flex-row gap-4 items-center">
           <div className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
+            <DarkmodeSwitch
+              isDark={effectiveTheme === "dark"}
               onClick={handleThemeToggle}
-              className="md:h-12 md:w-12 h-10 w-10 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
-              disabled={isAnimating}
-            >
-              <div
-                className={`transition-all duration-300 ${
-                  isAnimating ? "scale-90" : "md:scale-[150%] scale-[125%]"
-                } ${effectiveTheme === "dark" ? "rotate-0" : "rotate-180"}`}
-              >
-                {effectiveTheme === "dark" ? (
-                  <MoonStar className="h-10 md:scale-[150%] scale-[125%] w-10 text-yellow-300" />
-                ) : (
-                  <Sun className="h-10 md:scale-[150%] scale-[125%] w-10 text-amber-700" />
-                )}
-              </div>
-              <span className="sr-only">Toggle dark mode</span>
-            </Button>
+            />
 
             {/* Tooltip for first-time visitors */}
             {showTooltip && (
@@ -95,14 +72,14 @@ export default function Nav() {
                       <>
                         <p className="font-medium mb-1">☀️ Light Mode</p>
                         <p className="text-xs text-gray-300">
-                          Click the moon to switch to light mode!
+                          Click the switch to go to light mode!
                         </p>
                       </>
                     ) : (
                       <>
                         <p className="font-medium mb-1">🌙 Dark Mode</p>
                         <p className="text-xs text-gray-300">
-                          Click the sun to switch to dark mode!
+                          Click the switch to go to dark mode!
                         </p>
                       </>
                     )}

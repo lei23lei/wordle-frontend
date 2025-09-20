@@ -414,3 +414,60 @@ select {
     opacity: 1;
   }
 }
+
+/* Dark Mode Switch Styles - From Uiverse.io by rishichawda */
+svg #container,
+svg #patches,
+svg #stars,
+svg #button,
+svg #sun,
+svg #moon,
+svg #cloud {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.5s;
+}
+
+/* night sky background */
+svg.dark-mode #container {
+  fill: #2b4360;
+}
+
+/* move button to right when dark mode */
+svg.dark-mode #button {
+  transform: translate(28px, 2.333px);
+}
+
+/* show/hide sun and moon based on dark mode state */
+svg #sun {
+  opacity: 1;
+}
+
+svg.dark-mode #sun {
+  opacity: 0;
+}
+
+svg #moon {
+  opacity: 0;
+}
+
+svg.dark-mode #moon {
+  opacity: 1;
+}
+
+/* show or hide background items on dark mode state */
+svg #cloud {
+  opacity: 1;
+}
+
+svg.dark-mode #cloud {
+  opacity: 0;
+}
+
+svg #stars {
+  opacity: 0;
+}
+
+svg.dark-mode #stars {
+  opacity: 1;
+}

@@ -26,12 +26,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background relative  min-h-screen  pb-8">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Background />
           <StoreProvider>
             <Nav />
