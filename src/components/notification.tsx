@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Mail, Linkedin, Globe } from "lucide-react";
-import CustomizedButton from "@/components/customized-button";
+
+import { Button } from "@/components/ui/button";
 
 interface VersionDialogProps {
   version: string;
@@ -24,11 +25,11 @@ export default function VersionDialog({ version }: VersionDialogProps) {
     // 2. It's been more than 2 days since last seen
     const shouldShow = !lastSeen || now - parseInt(lastSeen) > twoDaysInMs;
 
-    if (shouldShow) {
+    if (true) {
       // Show dialog after a short delay for better UX
       setTimeout(() => {
         setIsOpen(true);
-      }, 500);
+      }, 1000);
     }
   }, [version]);
 
@@ -108,12 +109,13 @@ export default function VersionDialog({ version }: VersionDialogProps) {
               </div>
             </div>
 
-            <CustomizedButton
+            <Button
+              variant="glass"
               onClick={handleClose}
               className="mt-4 w-full sm:w-auto"
             >
               Let&apos;s Play!
-            </CustomizedButton>
+            </Button>
           </div>
         </div>
       </div>
