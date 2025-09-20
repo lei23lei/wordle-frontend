@@ -21,7 +21,7 @@ export default function DarkmodeSwitch({
       id="theme-toggle-button"
       className="cursor-pointer inline-block "
       style={{
-        fontSize: "10px",
+        fontSize: "8px",
         position: "relative",
         display: "inline-block",
         width: "7em",

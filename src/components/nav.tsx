@@ -28,7 +28,6 @@ export default function Nav() {
 
   // Handle theme toggle with better system theme support
   const handleThemeToggle = () => {
-    console.log("handleThemeToggle called!", { theme, systemTheme });
     // Hide tooltip when user clicks the theme toggle
     setShowTooltip(false);
 
@@ -57,7 +56,7 @@ export default function Nav() {
         </Link>
 
         <div className="flex flex-row gap-4 items-center">
-          <div className="relative">
+          <div className="relative -mt-4">
             <DarkmodeSwitch
               isDark={effectiveTheme === "dark"}
               onClick={handleThemeToggle}
