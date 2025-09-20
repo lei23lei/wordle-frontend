@@ -25,7 +25,7 @@ export default function VersionDialog({ version }: VersionDialogProps) {
     // 2. It's been more than 2 days since last seen
     const shouldShow = !lastSeen || now - parseInt(lastSeen) > twoDaysInMs;
 
-    if (true) {
+    if (shouldShow) {
       // Show dialog after a short delay for better UX
       setTimeout(() => {
         setIsOpen(true);
