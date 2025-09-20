@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { websocketService } from "@/services/websocket";
 import CustomizedButton from "@/components/customized-button";
 import Blanks from "@/components/blanks";
 import Keyboard from "@/components/keyboard";
-import Confetti from "@/components/confetti";
+import { Confetti } from "@/components/ui/confetti";
 import {
   Dialog,
   DialogContent,
@@ -41,7 +41,7 @@ export default function TwoPlayerPage() {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [targetWord, setTargetWord] = useState<string>("");
-  const [showConfetti, setShowConfetti] = useState(false);
+  const confettiRef = useRef<any>(null);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [gameOverReason, setGameOverReason] = useState<string | null>(null);
@@ -120,7 +120,6 @@ export default function TwoPlayerPage() {
       setGameOver(false);
       setWinner(null);
       setTargetWord("");
-      setShowConfetti(false);
       setMyGuesses([]);
       setOpponentGuesses([]);
       setMyGuessStates([]);
@@ -185,7 +184,42 @@ export default function TwoPlayerPage() {
 
       if (event.winner === myId) {
         setStatus("🎉 You won!");
-        setShowConfetti(true);
+        // Trigger confetti effect with a slight delay to sync with dialog
+        setTimeout(() => {
+          if (confettiRef.current) {
+            // Multiple confetti bursts for celebration
+            confettiRef.current.fire({
+              particleCount: 150,
+              spread: 70,
+              origin: { y: 0.41 },
+              colors: [
+                "#10b981",
+                "#f59e0b",
+                "#ef4444",
+                "#8b5cf6",
+                "#06b6d4",
+                "#84cc16",
+              ],
+            });
+
+            // Second burst for extra celebration
+            if (confettiRef.current) {
+              confettiRef.current.fire({
+                particleCount: 100,
+                spread: 50,
+                origin: { y: 0.4 },
+                colors: [
+                  "#10b981",
+                  "#f59e0b",
+                  "#ef4444",
+                  "#8b5cf6",
+                  "#06b6d4",
+                  "#84cc16",
+                ],
+              });
+            }
+          }
+        }, 100);
       } else if (event.winner === null) {
         setStatus("It's a tie!");
       } else {
@@ -747,7 +781,33 @@ export default function TwoPlayerPage() {
           </DialogContent>
         </Dialog>
 
-        <Confetti isVisible={showConfetti} />
+        {/* Confetti component positioned outside container for better visibility */}
+        <Confetti
+          ref={confettiRef}
+          manualstart={true}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 1000,
+          }}
+          options={{
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: [
+              "#10b981",
+              "#f59e0b",
+              "#ef4444",
+              "#8b5cf6",
+              "#06b6d4",
+              "#84cc16",
+            ],
+          }}
+        />
       </div>
     </div>
   );

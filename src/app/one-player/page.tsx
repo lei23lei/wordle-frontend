@@ -3,7 +3,8 @@
 import Blanks from "@/components/blanks";
 import Keyboard from "@/components/keyboard";
 import CustomizedButton from "@/components/customized-button";
-import Confetti from "@/components/confetti";
+import { Confetti } from "@/components/ui/confetti";
+
 import {
   Dialog,
   DialogContent,
@@ -11,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { VALID_WORDS } from "@/data/words";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 type GameState = "playing" | "won" | "lost";
 type DialogType = "won" | "lost" | "invalid" | "short" | null;
@@ -28,7 +29,7 @@ export default function OnePlayer() {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogType, setDialogType] = useState<DialogType>(null);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
-  const [confettiOpen, setConfettiOpen] = useState<boolean>(false);
+  const confettiRef = useRef<any>(null);
 
   // Keyboard state tracking
   const [correctKeys, setCorrectKeys] = useState<string[]>([]);
@@ -50,6 +51,7 @@ export default function OnePlayer() {
   const startNewGame = () => {
     const randomWord =
       VALID_WORDS[Math.floor(Math.random() * VALID_WORDS.length)];
+    console.log(randomWord);
     setTargetWord(randomWord);
     setCurrentGuess([]);
     setGuesses([]);
@@ -62,7 +64,6 @@ export default function OnePlayer() {
     setDialogOpen(false);
     setDialogType(null);
     setNotificationMessage("");
-    setConfettiOpen(false);
   };
 
   const showDialog = (type: DialogType) => {
@@ -206,7 +207,41 @@ export default function OnePlayer() {
     if (evaluation.every((state) => state === "correct")) {
       setGameState("won");
       showDialog("won");
-      setConfettiOpen(true);
+      // Trigger confetti effect with a slight delay to sync with dialog
+      setTimeout(() => {
+        if (confettiRef.current) {
+          // Multiple confetti bursts for celebration
+          confettiRef.current.fire({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.4 },
+            colors: [
+              "#10b981",
+              "#f59e0b",
+              "#ef4444",
+              "#8b5cf6",
+              "#06b6d4",
+              "#84cc16",
+            ],
+          });
+
+          if (confettiRef.current) {
+            confettiRef.current.fire({
+              particleCount: 100,
+              spread: 50,
+              origin: { y: 0.42 },
+              colors: [
+                "#10b981",
+                "#f59e0b",
+                "#ef4444",
+                "#8b5cf6",
+                "#06b6d4",
+                "#84cc16",
+              ],
+            });
+          }
+        }
+      }, 100);
     } else if (newGuesses.length >= 6) {
       setGameState("lost");
       showDialog("lost");
@@ -363,7 +398,7 @@ export default function OnePlayer() {
               </DialogTitle>
               {dialogType === "won" && (
                 <div className="text-center space-y-4 flex flex-col ">
-                  <p className="text-sm text-secondary">
+                  <p className="text-sm text-foreground">
                     {dialogContent.description}
                   </p>
                   <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg font-mono text-sm whitespace-pre-line">
@@ -387,8 +422,35 @@ export default function OnePlayer() {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        <Confetti isVisible={confettiOpen} />
       </div>
+
+      {/* Confetti component positioned outside container for better visibility */}
+      <Confetti
+        ref={confettiRef}
+        manualstart={true}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 1000,
+        }}
+        options={{
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: [
+            "#10b981",
+            "#f59e0b",
+            "#ef4444",
+            "#8b5cf6",
+            "#06b6d4",
+            "#84cc16",
+          ],
+        }}
+      />
     </div>
   );
 }
