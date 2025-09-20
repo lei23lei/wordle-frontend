@@ -731,7 +731,7 @@ export default function TwoPlayerPage() {
                 {getDialogContent().title}
               </DialogTitle>
               <div className="text-center space-y-4 flex flex-col">
-                <p className="text-sm text-secondary">
+                <p className="text-sm text-foreground">
                   {getDialogContent().description}
                 </p>
                 <div className="flex flex-col gap-2">
